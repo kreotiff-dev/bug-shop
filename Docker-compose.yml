@@ -1,0 +1,36 @@
+version: '3.8'
+services:
+  store-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: store-api
+    restart: always
+    ports:
+      - 3000:3000
+    networks:
+      - default
+    depends_on:
+      - store-db
+    env_file:
+      - .env
+
+  store-db:
+    container_name: store-db
+    image: postgres:13
+    restart: always
+    ports:
+      - 5432:5432
+    networks:
+      - default
+    env_file:
+      - .env
+    volumes:
+      - store-db:/var/lib/postgresql/data
+
+volumes:
+  store-db:
+    name: store-db
+
+networks:
+  default:

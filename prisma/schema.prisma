@@ -1,0 +1,132 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
+
+  email    String   @unique
+  password String
+  role     Role     @default(USER)
+  basket   Basket?
+  Rating   Rating[]
+  Token    Token[]
+}
+
+model Basket {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
+
+  user         User           @relation(fields: [userId], references: [id])
+  userId       Int            @unique
+  basketDevice BasketDevice[]
+}
+
+model BasketDevice {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
+
+  basket   Basket @relation(fields: [basketId], references: [id])
+  basketId Int
+
+  device   Device @relation(fields: [deviceId], references: [id])
+  deviceId Int    @unique
+}
+
+model Device {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
+
+  name   String @unique
+  price  Int
+  rating Int    @default(0)
+  img    String
+  type   Type   @relation(fields: [typeId], references: [id])
+  brand  Brand  @relation(fields: [brandId], references: [id])
+
+  BasketDevice BasketDevice?
+  Rating       Rating[]
+  typeId       Int
+  DeviceInfo   DeviceInfo[]
+  brandId      Int
+}
+
+model DeviceInfo {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
+
+  title       String
+  description String
+  device      Device @relation(fields: [deviceId], references: [id])
+  deviceId    Int
+}
+
+model Rating {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
+
+  rate Int
+
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
+
+  device   Device @relation(fields: [deviceId], references: [id])
+  deviceId Int
+}
+
+model Type {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
+
+  name        String        @unique
+  Device      Device[]
+  BrandOnType BrandOnType[]
+}
+
+model Brand {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
+
+  name        String        @unique
+  BrandOnType BrandOnType[]
+  Device      Device[]
+}
+
+model BrandOnType {
+  brand   Brand @relation(fields: [brandId], references: [id])
+  type    Type  @relation(fields: [typeId], references: [id])
+  brandId Int
+  typeId  Int
+
+  @@id([brandId, typeId])
+}
+
+model Token {
+  id Int @id @default(autoincrement())
+
+  refresh String
+  user    User   @relation(fields: [userId], references: [id])
+  userId  Int
+}
+
+enum Role {
+  ADMIN
+  USER
+}
