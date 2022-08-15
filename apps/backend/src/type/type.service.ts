@@ -1,18 +1,23 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
+import { createTypeDto } from '@store/interface';
 import { PrismaService } from 'nestjs-prisma';
+
+const logger = new Logger()
+
 
 @Injectable()
 export class TypeService {
   constructor(private prisma: PrismaService) {}
-  async create(dto: { name: string }) {
+  async create(dto: createTypeDto) {
     const candidate = await this.prisma.type.findUnique({
       where: {
         name: dto.name,
       },
     });
     if (candidate) {
+      logger.error('Такая категория уже существует')
       throw new HttpException(
-        `Такой тип уже существует`,
+        `Такая категория уже существует`,
         HttpStatus.BAD_REQUEST
       );
     }
@@ -27,6 +32,7 @@ export class TypeService {
   }
   async getById(dto: { id: number }) {
     if (!dto.id) {
+      logger.error(`Введите id`)
       throw new HttpException(`Введите id`, HttpStatus.BAD_REQUEST);
     }
     return await this.prisma.type.findUnique({
@@ -37,6 +43,7 @@ export class TypeService {
   }
   async update(dto: { id: number; name: string }) {
     if (!dto.id) {
+      logger.error('Введите id');
       throw new HttpException(`Введите id`, HttpStatus.BAD_REQUEST);
     }
     const typeById = await this.prisma.type.findUnique({
@@ -50,17 +57,11 @@ export class TypeService {
       },
     });
     if (!typeById) {
-      throw new HttpException(`Тип не найден`, HttpStatus.BAD_REQUEST);
-    }
-    if (!dto.name.length) {
-      throw new HttpException(
-        `Поле не может быть пустым`,
-        HttpStatus.BAD_REQUEST
-      );
+      throw new HttpException(`Категория не найдена`, HttpStatus.BAD_REQUEST);
     }
     if (typeByName && typeByName.id !== dto.id) {
       throw new HttpException(
-        `Такой тип уже существует`,
+        `Такая категория уже существует`,
         HttpStatus.BAD_REQUEST
       );
     }
@@ -75,6 +76,7 @@ export class TypeService {
   }
   async delete(dto: { id: number }) {
     if (!dto.id) {
+      logger.error('Введите id');
       throw new HttpException(`Введите id`, HttpStatus.BAD_REQUEST);
     }
     return await this.prisma.type.delete({

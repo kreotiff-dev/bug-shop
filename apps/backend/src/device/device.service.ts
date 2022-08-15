@@ -1,25 +1,31 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { CreateDeviceDto, deviceInfo, UpdateDeviceDto } from '@store/interface';
 import { PrismaService } from 'nestjs-prisma';
+import { FileService } from '../file/file.service';
+
+const logger = new Logger();
 
 @Injectable()
 export class DeviceService {
-  constructor(private prisma: PrismaService) {}
-  async create(dto: CreateDeviceDto) {
+  constructor(private prisma: PrismaService, private fileService: FileService) {}
+  async create(dto: CreateDeviceDto, file) {
     const candidate = await this.prisma.device.findUnique({
       where: {
         name: dto.name,
       },
     });
     if (candidate) {
+      logger.error('Товар с таким названием уже существует')
       throw new HttpException(
         `Товар с таким название уже существует`,
         HttpStatus.BAD_REQUEST
       );
     }
+    const picture = this.fileService.createFile(file);
     const device = await this.prisma.device.create({
       data: {
         ...dto,
+        img: picture
       },
     });
     return device;

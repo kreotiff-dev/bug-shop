@@ -6,20 +6,37 @@ import {
   Param,
   Patch,
   Post,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import { DeviceService } from './device.service';
 import { CreateDeviceDto, deviceInfo, UpdateDeviceDto } from '@store/interface';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @ApiTags('Товар')
 @Controller('device')
 export class DeviceController {
   constructor(private service: DeviceService) {}
 
+  // @ApiOperation({ summary: 'Создание товара' })
+  // @Post('/')
+  // @UseInterceptors(FileInterceptor('file',{
+  //   dest:'./apps/backend/static',
+
+  // }))
+  // create(@Body() dto: CreateDeviceDto, @UploadedFile() file) {
+  //   return this.service.create(dto, file);
+  // }
+
   @ApiOperation({ summary: 'Создание товара' })
+    @UseInterceptors(FileInterceptor('file',{
+    dest:'./apps/backend/static',
+
+  }))
   @Post('/')
-  create(@Body() dto: CreateDeviceDto) {
-    return this.service.create(dto);
+  create(@Body() dto: CreateDeviceDto, @UploadedFile() file) {
+    return this.service.create(dto, file);
   }
 
   @ApiOperation({ summary: 'Создать характеристику товар' })

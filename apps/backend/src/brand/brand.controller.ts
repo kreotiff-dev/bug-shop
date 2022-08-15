@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { BrandService } from './brand.service';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import { createBrandDto } from '@store/interface';
 
 @ApiTags('Бренд')
 @Controller('brand')
@@ -17,7 +18,7 @@ export class BrandController {
 
   @ApiOperation({ summary: 'Создание бренда' })
   @Post('/')
-  create(@Body() dto: { name: string }) {
+  create(@Body() dto: createBrandDto) {
     return this.service.create(dto);
   }
 

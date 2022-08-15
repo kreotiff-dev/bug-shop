@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { TypeService } from './type.service';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import { createTypeDto } from '@store/interface';
 
 @ApiTags('Категория')
 @Controller('type')
@@ -17,7 +18,7 @@ export class TypeController {
 
   @ApiOperation({ summary: 'Создание категории' })
   @Post('/')
-  create(@Body() dto: { name: string }) {
+  create(@Body() dto: createTypeDto) {
     return this.service.create(dto);
   }
 

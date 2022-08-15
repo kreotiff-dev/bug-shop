@@ -3,7 +3,7 @@ import { TypeService } from './type.service';
 import { TypeController } from './type.controller';
 
 @Module({
-  providers: [TypeService],
+  providers: [TypeService ],
   controllers: [TypeController],
 })
 export class TypeModule {}

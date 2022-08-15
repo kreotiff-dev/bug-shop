@@ -4,6 +4,7 @@ import { UserModule } from './user/user.module';
 import { BrandModule } from './brand/brand.module';
 import { TypeModule } from './type/type.module';
 import { DeviceModule } from './device/device.module';
+import { FileModule } from './file/file.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { DeviceModule } from './device/device.module';
     BrandModule,
     TypeModule,
     DeviceModule,
+    FileModule
   ],
 })
 export class AppModule {}

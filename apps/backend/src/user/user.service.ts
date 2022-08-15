@@ -3,6 +3,7 @@ import {
   HttpException,
   HttpStatus,
   Injectable,
+  Logger,
   UnauthorizedException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -13,6 +14,8 @@ import { AuthDto } from '@store/interface';
 import * as argon from 'argon2';
 import { Role } from '@prisma/client';
 
+const logger = new Logger();
+
 @Injectable()
 export class UserService {
   constructor(
@@ -20,6 +23,8 @@ export class UserService {
     private jwt: JwtService,
     private config: ConfigService
   ) {}
+
+
   async login(dto: AuthDto) {
     const user = await this.prisma.user.findUnique({
       where: {
@@ -27,10 +32,12 @@ export class UserService {
       },
     });
     if (!user) {
+      logger.error('Логин не верный')
       throw new HttpException(`Логин не верный`, HttpStatus.BAD_REQUEST);
     }
     const pwMatches = await argon.verify(user.password, dto.password);
     if (!pwMatches) {
+      logger.error('Пароль не верный')
       throw new HttpException(`Пароль не верный`, HttpStatus.BAD_REQUEST);
     }
     const tokens = await this.signToken(user.id, user.email);
@@ -132,6 +139,7 @@ export class UserService {
   async refresh(refreshToken: string) {
     try {
       if (!refreshToken) {
+        logger.error('Ошибка авторизации')
         throw new UnauthorizedException({
           message: 'Ошибка авторизации',
         });
@@ -144,6 +152,7 @@ export class UserService {
         },
       });
       if (!userData || !tokenFromDb) {
+        logger.error('Ошибка авторизации')
         throw new UnauthorizedException({
           message: 'Ошибка авторизации',
         });
@@ -151,7 +160,8 @@ export class UserService {
 
       return await this.signToken(userData.id, userData.email);
     } catch (error) {
-      throw new UnauthorizedException({ message: 'Токен умер' });
+      logger.error('Токен устарел')
+      throw new UnauthorizedException({ message: 'Токен устарел' });
     }
   }
   async getToken() {
@@ -162,6 +172,7 @@ export class UserService {
       where: { email: dto.email },
     });
     if (candidateForEmail) {
+      logger.error(`Аккаунт с таким email ${dto.email} уже зарегистрирован`)
       throw new HttpException(
         `Аккаунт с таким email ${dto.email} уже зарегистрирован`,
         HttpStatus.BAD_REQUEST
@@ -173,5 +184,18 @@ export class UserService {
         role: Role.ADMIN,
       },
     });
+  }
+  async delete (dto: {id: number}){
+    await this.prisma.basket.delete({
+      where:{
+        userId: dto.id
+      }
+    })
+    const user = await this.prisma.user.findUnique({
+      where:{
+        id: dto.id
+      }
+    })
+    return user;
   }
 }
