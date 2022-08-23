@@ -2,8 +2,7 @@ import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { createTypeDto } from '@store/interface';
 import { PrismaService } from 'nestjs-prisma';
 
-const logger = new Logger()
-
+const logger = new Logger();
 
 @Injectable()
 export class TypeService {
@@ -15,7 +14,7 @@ export class TypeService {
       },
     });
     if (candidate) {
-      logger.error('Такая категория уже существует')
+      logger.error('Такая категория уже существует');
       throw new HttpException(
         `Такая категория уже существует`,
         HttpStatus.BAD_REQUEST
@@ -31,10 +30,6 @@ export class TypeService {
     return this.prisma.type.findMany();
   }
   async getById(dto: { id: number }) {
-    if (!dto.id) {
-      logger.error(`Введите id`)
-      throw new HttpException(`Введите id`, HttpStatus.BAD_REQUEST);
-    }
     return await this.prisma.type.findUnique({
       where: {
         id: dto.id,
@@ -42,23 +37,20 @@ export class TypeService {
     });
   }
   async update(dto: { id: number; name: string }) {
-    if (!dto.id) {
-      logger.error('Введите id');
-      throw new HttpException(`Введите id`, HttpStatus.BAD_REQUEST);
-    }
-    const typeById = await this.prisma.type.findUnique({
+    const candidate = await this.prisma.type.findUnique({
       where: {
         id: dto.id,
       },
     });
+    if (!candidate) {
+      logger.error('Категория не найдена');
+      throw new HttpException(`Категория не найдена`, HttpStatus.BAD_REQUEST);
+    }
     const typeByName = await this.prisma.type.findUnique({
       where: {
         name: dto.name,
       },
     });
-    if (!typeById) {
-      throw new HttpException(`Категория не найдена`, HttpStatus.BAD_REQUEST);
-    }
     if (typeByName && typeByName.id !== dto.id) {
       throw new HttpException(
         `Такая категория уже существует`,
@@ -75,9 +67,14 @@ export class TypeService {
     });
   }
   async delete(dto: { id: number }) {
-    if (!dto.id) {
-      logger.error('Введите id');
-      throw new HttpException(`Введите id`, HttpStatus.BAD_REQUEST);
+    const candidate = await this.prisma.type.findUnique({
+      where: {
+        id: dto.id,
+      },
+    });
+    if (!candidate) {
+      logger.error('Категория не найдена');
+      throw new HttpException(`Категория не найдена`, HttpStatus.BAD_REQUEST);
     }
     return await this.prisma.type.delete({
       where: {

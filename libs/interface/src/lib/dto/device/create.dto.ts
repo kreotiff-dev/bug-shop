@@ -1,35 +1,38 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { ApiProperty } from '@nestjs/swagger';
+import { IsInt, IsNotEmpty, IsString, Min } from 'class-validator';
 export class CreateDeviceDto {
-  // @IsNotEmpty()
-  // @IsString()
+  @IsNotEmpty()
+  @IsString()
   @ApiProperty({
     description: 'Название товара',
-    type: String
+    type: String,
   })
   name!: string;
 
-  // @IsNotEmpty()
-  // @IsNumber()
+  @IsNotEmpty()
+  @IsInt()
+  @Min(0)
   @ApiProperty({
     description: 'Стоимость товара',
-    type: Number
+    type: Number,
   })
   price!: number;
 
-  // @IsNotEmpty()
-  // @IsNumber()
+  @IsNotEmpty()
+  @IsInt()
+  @Min(1)
   @ApiProperty({
     description: 'Id категории',
-    type: Number
+    type: Number,
   })
   typeId!: number;
 
-  // @IsNotEmpty()
-  // @IsNumber()
+  @IsNotEmpty()
+  @IsInt()
+  @Min(1)
   @ApiProperty({
     description: 'Id бренда',
-    type: Number
+    type: Number,
   })
   brandId!: number;
 }
