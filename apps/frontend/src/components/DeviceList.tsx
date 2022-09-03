@@ -14,6 +14,7 @@ const DeviceList: FC<DeviceListProps> = ({ devices }) => {
       grid={{ gutter: 16, column: 4 }}
       dataSource={devices}
       renderItem={(item) => <DeviceItem device={item} />}
+      className="shop__list"
     />
   );
 };

@@ -1,14 +1,28 @@
-import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
+import {
+  forwardRef,
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+  Logger,
+} from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
-import { AuthDto } from '@store/interface';
+import { AuthDto, updateUserDto } from '@store/interface';
 import { Role } from '@prisma/client';
 import { JwtService } from '@nestjs/jwt';
+import * as argon from 'argon2';
+import { AuthService } from './../auth/auth.service';
 
 const logger = new Logger();
 
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService, private jwt: JwtService) {}
+  constructor(
+    private prisma: PrismaService,
+    private jwt: JwtService,
+    @Inject(forwardRef(() => AuthService))
+    private auth: AuthService
+  ) {}
 
   async create(dto: AuthDto) {
     const candidateForEmail = await this.prisma.user.findUnique({
@@ -43,9 +57,10 @@ export class UserService {
     });
     return user;
   }
+
   async getMe(dto: { token: string }) {
-    const token = dto.token.split(' ')[1];
-    const decode = this.jwt.decode(token);
+    const access_token = dto.token.split(' ')[1];
+    const decode = this.jwt.decode(access_token);
     if (!decode) {
       logger.error('Токен не валидный');
       throw new HttpException(`Токен не валидный`, HttpStatus.BAD_REQUEST);
@@ -59,12 +74,33 @@ export class UserService {
     return user;
   }
 
-  async deleteMe(dto: { token: string }) {
-    const token = dto.token.split(' ')[1];
-    const decode = this.jwt.decode(token);
+  async deleteMe(dto: { token: string; password: string }) {
+    const access_token = dto.token.split(' ')[1];
+    const decode = this.jwt.decode(access_token);
     if (!decode) {
       logger.error('Токен не валидный');
       throw new HttpException(`Токен не валидный`, HttpStatus.BAD_REQUEST);
+    }
+    const user = await this.prisma.user.findUnique({
+      where: {
+        email: decode['email'],
+      },
+    });
+    if (!user) {
+      logger.error('Пользователь не найден');
+      throw new HttpException(`Пользователь не найден`, HttpStatus.BAD_REQUEST);
+    }
+    if (user.role === Role.ADMIN) {
+      logger.error('Администратор не может удалить свой аккаунт');
+      throw new HttpException(
+        `Администратор не может удалить свой аккаунт`,
+        HttpStatus.BAD_REQUEST
+      );
+    }
+    const pwMatches = await argon.verify(user.password, dto.password);
+    if (!pwMatches) {
+      logger.error('Пароль не верный');
+      throw new HttpException(`Пароль не верный`, HttpStatus.BAD_REQUEST);
     }
     const id = decode['sub'];
     await this.prisma.basket.delete({
@@ -77,11 +113,83 @@ export class UserService {
         userId: id,
       },
     });
-    const user = await this.prisma.user.delete({
+    return await this.prisma.user.delete({
+      where: {
+        id: user.id,
+      },
+    });
+  }
+
+  async update(token: string, dto: updateUserDto) {
+    const access_token = token.split(' ')[1];
+    const user = this.jwt.decode(access_token);
+    if (!user) {
+      logger.error('Токен не валидный');
+      throw new HttpException(`Токен не валидный`, HttpStatus.BAD_REQUEST);
+    }
+
+    const updateUser = await this.prisma.user.update({
+      where: {
+        id: user['sub'],
+      },
+      data: {
+        email: dto.email,
+        name: dto.name,
+        surname: dto.surname,
+        bithday: dto.bithday,
+        sex: dto.sex,
+        phone: dto.phone,
+      },
+    });
+    const tokens = await this.auth.signToken(
+      updateUser.id,
+      updateUser.email,
+      updateUser.role
+    );
+    return { ...tokens };
+  }
+
+  async updatePassword(
+    token: string,
+    dto: { newPassword: string; oldPassword: string }
+  ) {
+    const access_token = token.split(' ')[1];
+    const decode = this.jwt.decode(access_token);
+    if (!decode) {
+      logger.error('Токен не валидный');
+      throw new HttpException(`Токен не валидный`, HttpStatus.BAD_REQUEST);
+    }
+    const user = await this.prisma.user.findUnique({
       where: {
         email: decode['email'],
       },
     });
-    return user;
+    const pwMatches = await argon.verify(user.password, dto.oldPassword);
+    if (!pwMatches) {
+      logger.error('Старый пароль не верный');
+      throw new HttpException(
+        `Старый пароль не верный`,
+        HttpStatus.BAD_REQUEST
+      );
+    }
+    const hash = await argon.hash(dto.newPassword);
+    return await this.prisma.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        password: hash,
+      },
+    });
+  }
+
+  async decode(token: string) {
+    const access_token = token.split(' ')[1];
+    const decode = this.jwt.decode(access_token);
+    if (!decode) {
+      logger.error('Токен не валидный');
+      throw new HttpException(`Токен не валидный`, HttpStatus.BAD_REQUEST);
+    }
+    return decode;
   }
 }

@@ -26,8 +26,19 @@ export class BrandService {
       },
     });
   }
-  async getAll() {
-    return await this.prisma.brand.findMany();
+  async getAll(query: { page?: string; limit?: string }) {
+    const page = parseInt(query.page) || 1;
+    const take = parseInt(query.limit) || 8;
+    const skip = page * take - take;
+    const total = await this.prisma.brand.count();
+    const brands = await this.prisma.brand.findMany({
+      orderBy: {
+        id: 'asc',
+      },
+      skip,
+      take,
+    });
+    return { brands, count: total };
   }
   async getById(dto: { id: number }) {
     const brand = await this.prisma.brand.findUnique({

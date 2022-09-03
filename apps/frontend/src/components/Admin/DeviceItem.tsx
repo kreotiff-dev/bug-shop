@@ -1,35 +1,46 @@
 import { Device } from '@prisma/client';
-import { Card, List } from 'antd';
-import React, { FC } from 'react';
-import { brandAPI } from './../../service/brand';
-import { useNavigate } from 'react-router-dom';
+import { message, Popconfirm } from 'antd';
+import React from 'react';
+import { deviceAPI } from '../../service/device';
+import DeviceModal from '../Modal/Device';
+import { typeAPI } from './../../service/type';
 
 type DeviceItemProps = {
   device: Device;
 };
 
-const DeviceItem: FC<DeviceItemProps> = ({ device }) => {
-  const navigate = useNavigate();
-  const { data: brand } = brandAPI.useGetByIdQuery(device.brandId);
-  const onClick = () => navigate(`/admin/device/${device.id}`);
+const DeviceItem: React.FC<DeviceItemProps> = ({ device }) => {
+  const { data } = deviceAPI.useGetFullInfoQuery(device.id);
+  const [isModal, setIsModal] = React.useState<boolean>(false);
+  const [remove] = deviceAPI.useDeleteMutation();
+  const onDelete = () => {
+    remove(device.id)
+      .unwrap()
+      .then(() => {
+        message.success('Устройство удалено!');
+      })
+      .catch((error) => message.error(error.data.message));
+  };
+  const onUpdate = () => {
+    setIsModal(true);
+  };
   return (
-    <List.Item>
-      <Card
-        onClick={onClick}
-        hoverable
-        style={{ width: 240 }}
-        cover={
-          <img
-            alt="example"
-            src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"
-          />
-        }
-      >
-        <h3>
-          {brand?.name} {device.name}
-        </h3>
-      </Card>
-    </List.Item>
+    <>
+      <Popconfirm title="Удалить?" onConfirm={onDelete}>
+        <a>Удалить</a>
+      </Popconfirm>{' '}
+      / <a onClick={onUpdate}>Редактировать</a>
+      {isModal && (
+        <DeviceModal
+          visible={isModal}
+          setIsVisible={setIsModal}
+          device={device}
+          info={data?.info}
+          type={data?.type}
+          brand={data?.brand}
+        />
+      )}
+    </>
   );
 };
 

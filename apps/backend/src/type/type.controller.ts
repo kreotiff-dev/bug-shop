@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { TypeService } from './type.service';
@@ -30,8 +31,8 @@ export class TypeController {
 
   @ApiOperation({ summary: 'Получить все категории' })
   @Get('')
-  getAll() {
-    return this.service.getAll();
+  getAll(@Query() query: { page?: string; limit?: string }) {
+    return this.service.getAll(query);
   }
 
   @ApiOperation({ summary: 'Получить категорию' })

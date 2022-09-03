@@ -10,29 +10,34 @@ export class CreateDeviceDto {
   name!: string;
 
   @IsNotEmpty()
-  @IsInt()
-  @Min(0)
+  // @IsInt()
+  // @Min(0)
   @ApiProperty({
     description: 'Стоимость товара',
-    type: Number,
+    // type: Number,
   })
-  price!: number;
+  price!: string;
 
   @IsNotEmpty()
-  @IsInt()
-  @Min(1)
+  // @IsInt()
+  // @Min(1)
   @ApiProperty({
     description: 'Id категории',
-    type: Number,
+    // type: Number,
   })
-  typeId!: number;
+  typeId!: string;
 
   @IsNotEmpty()
-  @IsInt()
-  @Min(1)
+  // @IsInt()
+  // @Min(1)
   @ApiProperty({
     description: 'Id бренда',
-    type: Number,
+    // type: Number,
   })
-  brandId!: number;
+  brandId!: string;
+
+  @ApiProperty({
+    description: 'Характеристики',
+  })
+  info?: string;
 }

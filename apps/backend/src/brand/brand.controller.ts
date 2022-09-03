@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { BrandService } from './brand.service';
@@ -30,8 +31,8 @@ export class BrandController {
 
   @ApiOperation({ summary: 'Получить все бренды' })
   @Get('')
-  getAll() {
-    return this.service.getAll();
+  getAll(@Query() query: { page?: string; limit?: string }) {
+    return this.service.getAll(query);
   }
 
   @ApiOperation({ summary: 'Получить определенный бренд' })

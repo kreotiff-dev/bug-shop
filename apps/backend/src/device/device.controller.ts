@@ -3,20 +3,30 @@ import {
   Controller,
   Delete,
   Get,
+  Headers,
   Param,
   Patch,
   Post,
+  Query,
+  Req,
+  Res,
   UploadedFile,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { DeviceService } from './device.service';
-import { CreateDeviceDto, deviceInfo, UpdateDeviceDto } from '@store/interface';
+import {
+  CreateDeviceDto,
+  deviceInfo,
+  queryDeviceDto,
+  UpdateDeviceDto,
+} from '@store/interface';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { Roles } from '../auth/roles-auth.decorator';
 import { RolesGuard } from '../auth/roles.guard';
+import { Request, Response } from 'express';
 
 @ApiTags('Товар')
 @Controller('device')
@@ -36,21 +46,10 @@ export class DeviceController {
     return this.service.create(dto, file);
   }
 
-  @ApiOperation({ summary: 'Создать характеристику товар' })
-  @Roles('ADMIN')
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Post('/info/:id')
-  addInfo(@Body() dto: deviceInfo, @Param('id') id: string) {
-    return this.service.addInfo({
-      ...dto,
-      deviceId: parseInt(id),
-    });
-  }
-
   @ApiOperation({ summary: 'Получить все товары' })
   @Get('/')
-  getAll() {
-    return this.service.getAll();
+  async getAll(@Query() query: queryDeviceDto) {
+    return await this.service.getAll(query);
   }
 
   @ApiOperation({ summary: 'Получить товар по id' })
@@ -72,14 +71,16 @@ export class DeviceController {
   }
 
   @ApiOperation({ summary: 'Изменить данные о товаре' })
+  @UseInterceptors(FileInterceptor('file'))
   @Roles('ADMIN')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Patch('/:id')
-  update(@Body() dto: UpdateDeviceDto, @Param('id') id: string) {
-    return this.service.update({
-      id: parseInt(id),
-      ...dto,
-    });
+  update(
+    @Body() dto: UpdateDeviceDto,
+    @Param('id') id: string,
+    @UploadedFile() file
+  ) {
+    return this.service.update({ id: parseInt(id), ...dto }, file);
   }
 
   @ApiOperation({ summary: 'Удалить товар' })

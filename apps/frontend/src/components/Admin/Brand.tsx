@@ -42,7 +42,11 @@ const AdminBrand = () => {
       <Row>
         <Col span={12} offset={6}>
           <Button onClick={onClick}>Создать</Button>
-          {brands ? <BrandList brands={brands} /> : <h2>Список пуст</h2>}
+          {brands?.brands ? (
+            <BrandList brands={brands.brands} />
+          ) : (
+            <h2>Список пуст</h2>
+          )}
         </Col>
       </Row>
       <Modal

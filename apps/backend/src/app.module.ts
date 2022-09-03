@@ -8,6 +8,7 @@ import { FileModule } from './file/file.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { AuthModule } from './auth/auth.module';
+import { BasketModule } from './basket/basket.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { AuthModule } from './auth/auth.module';
       ),
     }),
     AuthModule,
+    BasketModule,
   ],
 })
 export class AppModule {}

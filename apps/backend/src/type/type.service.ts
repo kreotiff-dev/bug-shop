@@ -26,8 +26,19 @@ export class TypeService {
       },
     });
   }
-  async getAll() {
-    return this.prisma.type.findMany();
+  async getAll(query: { page?: string; limit?: string }) {
+    const page = parseInt(query.page) || 1;
+    const take = parseInt(query.limit) || 8;
+    const skip = page * take - take;
+    const total = await this.prisma.type.count();
+    const types = await this.prisma.type.findMany({
+      orderBy: {
+        id: 'asc',
+      },
+      skip,
+      take,
+    });
+    return { types, count: total };
   }
   async getById(dto: { id: number }) {
     return await this.prisma.type.findUnique({

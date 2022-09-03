@@ -6,11 +6,32 @@
 }
 
 body {
-  overflow: hidden;
+  /* overflow: hidden; */
+  overflow-x: hidden;
+  font-size: 16px;
 }
 
 * {
   box-sizing: border-box;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  /* display: none; <- Crashes Chrome on hover */
+  -webkit-appearance: none;
+  margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+.container {
+  width: 1230px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+.flex {
+  display: flex;
+}
+
+.justify-between {
+  justify-content: space-between;
 }
 
 .login {
@@ -21,22 +42,248 @@ body {
   height: 100%;
 }
 
-.ant-layout {
-  height: 100vh;
+.main {
+  min-height: 100vh;
+  height: max-content;
 }
 
 .ant-layout-sider {
   background: #e5e5e5;
 }
-.ant-layout-header {
+.header {
   color: #e5e5e5;
   display: flex;
-  justify-content: space-between;
+}
+.header__nav {
+  margin-left: auto;
+  margin-right: 0;
 }
 
 .d-flex {
   display: flex;
 }
+.d-i-flex {
+  display: inline-flex;
+}
+.items-center {
+  align-items: center;
+}
+.mr-20 {
+  margin-right: 20px;
+}
 .justify-between {
   justify-content: space-between;
+}
+
+img {
+  height: 100%;
+}
+
+.profile {
+  max-width: 1400px;
+  width: 100%;
+  padding: 20px;
+  border-radius: 20px;
+  margin: 0 auto;
+  background-color: #fff;
+  margin-top: 40px;
+  box-shadow: 0 0 20px rgb(0 0 0 / 10%);
+}
+
+.profile__header {
+  display: flex;
+  margin-bottom: 30px;
+}
+.profile__title {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  height: max-content;
+}
+.profile__update {
+  display: block;
+  color: #cb11ab;
+  cursor: pointer;
+  font-size: 16px;
+}
+.profile__img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.profile__img img {
+  min-height: 100%;
+  min-width: 100%;
+}
+.profile__name {
+  margin-left: 30px;
+}
+.profile__list {
+  display: flex;
+}
+.profile__item {
+  width: 25%;
+}
+.profile__item-title {
+  color: #8b8b8b;
+  margin-bottom: 8px;
+  font-weight: 400;
+  font-size: 14px;
+}
+
+.ant-dropdown-menu-submenu-title .ant-dropdown-menu-submenu-expand-icon {
+  display: none;
+}
+
+.basket {
+  display: flex;
+  max-width: 1400px;
+  width: 100%;
+  padding: 20px;
+  margin: 0 auto;
+}
+.basket__body {
+  flex: 1;
+  border-radius: 20px;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 0 20px rgb(0 0 0 / 10%);
+}
+
+.basket__sidebar {
+  border-radius: 20px;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 0 20px rgb(0 0 0 / 10%);
+  height: max-content;
+  margin-left: 40px;
+  width: 340px;
+}
+.basket__sidebar-item {
+  display: flex;
+  justify-content: space-between;
+}
+.basket__item {
+  display: flex;
+  padding: 20px 0;
+}
+.basket__item-img {
+  width: 80px;
+  height: 100px;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20px;
+  background: #e5e5e5;
+}
+
+.basket__item-img img {
+  /* max-width: 100%;
+  max-height: 100%;
+  height: unset; */
+}
+
+.basket__item-price {
+  margin-left: auto;
+  margin-right: 0;
+}
+.basket__item-title {
+  width: 200px;
+  color: black;
+  height: max-content;
+}
+.count {
+  display: flex;
+}
+.count__minus,
+.count__plus {
+  width: 40px;
+  height: 40px;
+  border: 1px solid #d5d5d5;
+  border-radius: 100%;
+  box-sizing: border-box;
+  cursor: pointer;
+  background: #fff;
+}
+.count__minus:disabled,
+.count__plus:disabled {
+  opacity: 0.9;
+  cursor: default;
+  color: #e5e5e5;
+}
+.count__input-block {
+  width: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.count__input {
+  width: max-content;
+  border: 0;
+  background: #fff;
+}
+
+.basket__item-action {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.profile__dropdown-title {
+  cursor: default;
+}
+.shop__sidebar {
+  margin: 10px auto 10px;
+}
+.shop__sidebar-title {
+  margin-right: 20px;
+  display: inline-block;
+}
+.shop__sidebar-filter {
+  margin-right: 20px;
+}
+
+.shop__item-img {
+  width: 200px;
+  height: 200px;
+  overflow: hidden;
+  text-align: center;
+  margin: 0 auto;
+}
+.shop__item-img img {
+  height: 100%;
+}
+
+.shop__body {
+  display: flex;
+  flex-direction: column;
+  height: 650px;
+}
+.shop__list {
+  flex: 1;
+}
+.shop__list-pagination {
+  margin: 0 auto;
+}
+
+.admin__device-pagination {
+  margin: auto 0;
+  text-align: center;
+}
+
+.admin__device-btn {
+  /* width: max-content; */
+  margin-bottom: 10px;
+}
+
+.admin__device {
+  height: 730px;
+  display: flex;
+  flex-direction: column;
+}
+.admin__device-table {
+  flex: 1;
 }

@@ -12,6 +12,14 @@ export class UpdateInfoDeviceDto {
   @IsNotEmpty()
   @IsString()
   @ApiProperty({
+    description: 'Название характеристики',
+    type: String,
+  })
+  title!: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @ApiProperty({
     description: 'Значение характеристики',
     type: String,
   })

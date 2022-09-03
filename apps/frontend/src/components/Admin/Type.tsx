@@ -38,7 +38,7 @@ const AdminType = () => {
       <Row>
         <Col span={12} offset={6}>
           <Button onClick={onClick}>Создать</Button>
-          {types ? <TypeList types={types} /> : <h2>Список пуст</h2>}
+          {types ? <TypeList types={types.types} /> : <h2>Список пуст</h2>}
         </Col>
       </Row>
       <Modal

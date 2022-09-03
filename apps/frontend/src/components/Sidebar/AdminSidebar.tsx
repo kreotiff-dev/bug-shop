@@ -1,11 +1,30 @@
 import React from 'react';
 import { Layout, Menu } from 'antd';
 import { useLocation, Link } from 'react-router-dom';
+import { ItemType } from 'antd/lib/menu/hooks/useItems';
 
 const { Sider } = Layout;
 
 const AdminSidebar = () => {
   const location = useLocation();
+  const items: ItemType[] = [
+    {
+      key: '/admin',
+      label: <Link to={'/admin'}>Главная</Link>,
+    },
+    {
+      key: '/admin/device',
+      label: <Link to={'/admin/device'}>Устройства</Link>,
+    },
+    {
+      key: '/admin/brand',
+      label: <Link to={'/admin/brand'}>Бренды</Link>,
+    },
+    {
+      key: '/admin/type',
+      label: <Link to={'/admin/type'}>Категории</Link>,
+    },
+  ];
   return (
     <Sider>
       <Menu
@@ -13,20 +32,8 @@ const AdminSidebar = () => {
         defaultSelectedKeys={['/admin']}
         style={{ height: '100%' }}
         selectedKeys={[location.pathname]}
-      >
-        <Menu.Item key="/admin">
-          <Link to={'/admin'}>Главная</Link>
-        </Menu.Item>
-        <Menu.Item key="/admin/device">
-          <Link to={'/admin/device'}>Устройства</Link>
-        </Menu.Item>
-        <Menu.Item key="/admin/brand">
-          <Link to={'/admin/brand'}>Бренды</Link>
-        </Menu.Item>
-        <Menu.Item key="/admin/type">
-          <Link to={'/admin/type'}>Категории</Link>
-        </Menu.Item>
-      </Menu>
+        items={items}
+      />
     </Sider>
   );
 };

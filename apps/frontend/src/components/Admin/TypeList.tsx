@@ -25,9 +25,9 @@ const TypeList: FC<TypeListProps> = ({ types }) => {
   const hundlerDelete = (id: number) => {
     remove({ id });
   };
-  const hundlerUpdate = (id: number) => {
+  const hundlerUpdate = (type: Type) => {
     setIsModal(true);
-    setUpdateType({ ...updateType, id });
+    setUpdateType(type);
   };
 
   const handleOk = () => {
@@ -67,7 +67,7 @@ const TypeList: FC<TypeListProps> = ({ types }) => {
           /{' '}
           <Popconfirm
             title="Редактировать?"
-            onConfirm={() => hundlerUpdate(record.id)}
+            onConfirm={() => hundlerUpdate(record)}
           >
             <a>Редактировать</a>
           </Popconfirm>

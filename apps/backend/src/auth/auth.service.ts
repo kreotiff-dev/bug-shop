@@ -1,7 +1,9 @@
 import {
   ForbiddenException,
+  forwardRef,
   HttpException,
   HttpStatus,
+  Inject,
   Injectable,
   Logger,
   UnauthorizedException,
@@ -23,6 +25,7 @@ export class AuthService {
     private prisma: PrismaService,
     private jwt: JwtService,
     private config: ConfigService,
+    @Inject(forwardRef(() => UserService))
     private user: UserService
   ) {}
 

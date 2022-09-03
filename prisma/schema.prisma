@@ -22,6 +22,8 @@ model User {
   surname  String?
   phone    String?
   basket   Basket?
+  bithday  Int?
+  sex      Sex?
   Rating   Rating[]
   Token    Token[]
 }
@@ -31,22 +33,21 @@ model Basket {
   createdAt DateTime @default(now())
   updateAt  DateTime @updatedAt
 
-  user         User           @relation(fields: [userId], references: [id])
+  user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId       Int            @unique
+  totalPrice   Int            @default(0)
   basketDevice BasketDevice[]
 }
 
 model BasketDevice {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updateAt  DateTime @updatedAt
+  id Int @id @default(autoincrement())
 
-  basket   Basket @relation(fields: [basketId], references: [id])
+  basket   Basket @relation(fields: [basketId], references: [id], onDelete: Cascade)
   basketId Int
 
-  device   Device @relation(fields: [deviceId], references: [id])
+  device   Device @relation(fields: [deviceId], references: [id], onDelete: Cascade)
   count    Int    @default(1)
-  deviceId Int    @unique
+  deviceId Int
 }
 
 model Device {
@@ -58,10 +59,10 @@ model Device {
   price  Int
   rating Int    @default(0)
   img    String
-  type   Type   @relation(fields: [typeId], references: [id])
-  brand  Brand  @relation(fields: [brandId], references: [id])
+  type   Type   @relation(fields: [typeId], references: [id], onDelete: SetNull)
+  brand  Brand  @relation(fields: [brandId], references: [id], onDelete: SetNull)
 
-  BasketDevice BasketDevice?
+  BasketDevice BasketDevice[]
   Rating       Rating[]
   typeId       Int
   DeviceInfo   DeviceInfo[]
@@ -75,7 +76,7 @@ model DeviceInfo {
 
   title       String
   description String
-  device      Device @relation(fields: [deviceId], references: [id])
+  device      Device @relation(fields: [deviceId], references: [id], onDelete: Cascade)
   deviceId    Int
 }
 
@@ -86,10 +87,10 @@ model Rating {
 
   rate Int
 
-  user   User @relation(fields: [userId], references: [id])
+  user   User @relation(fields: [userId], references: [id], onDelete: NoAction)
   userId Int
 
-  device   Device @relation(fields: [deviceId], references: [id])
+  device   Device @relation(fields: [deviceId], references: [id], onDelete: Cascade)
   deviceId Int
 }
 
@@ -114,8 +115,8 @@ model Brand {
 }
 
 model BrandOnType {
-  brand   Brand @relation(fields: [brandId], references: [id])
-  type    Type  @relation(fields: [typeId], references: [id])
+  brand   Brand @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  type    Type  @relation(fields: [typeId], references: [id], onDelete: Cascade)
   brandId Int
   typeId  Int
 
@@ -126,11 +127,16 @@ model Token {
   id Int @id @default(autoincrement())
 
   refresh String
-  user    User   @relation(fields: [userId], references: [id])
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId  Int
 }
 
 enum Role {
   ADMIN
   USER
+}
+
+enum Sex {
+  MALE
+  FEMALE
 }

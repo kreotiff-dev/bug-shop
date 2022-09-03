@@ -1,35 +1,27 @@
-import { Button, Layout } from 'antd';
-import React, { useContext, useEffect } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { authAPI } from '../service/auth';
+import { Layout } from 'antd';
+import React, { useContext } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { LOGIN_ROUTE } from '../utils/const';
 import { AuthContext } from './../context/index';
-import { ADMIN_ROUTE } from './../utils/const';
+import Basket from './../assets/Basket';
+import ProfileDropdown from './Profile/Dropdown';
 
 const { Header: AHeader } = Layout;
 
 const Header = () => {
   const location = useLocation();
-  // const navigate = useNavigate();
-  const [logout] = authAPI.useLogoutMutation();
-  const { isAuth, setIsAuth } = useContext(AuthContext);
+  const { isAuth } = useContext(AuthContext);
   const isLogin = location.pathname === LOGIN_ROUTE;
-  const onClick = () => {
-    // localStorage.removeItem('access_token');
-    // navigate(LOGIN_ROUTE);
-    logout();
-    setIsAuth(false);
-  };
   return (
-    <AHeader>
+    <AHeader className="header">
       <Link to={'/shop'}>Shop</Link>
-      <div>
+      <div className="header__nav">
         {isAuth ? (
           <>
-            <Link to={ADMIN_ROUTE}>Админ</Link>
-            <Link to={LOGIN_ROUTE} onClick={onClick}>
-              Выход
+            <Link to={'/basket'} className="d-i-flex items-center mr-20">
+              <Basket />
             </Link>
+            <ProfileDropdown />
           </>
         ) : isLogin ? (
           <Link to={'/registration'}>Регистрация</Link>

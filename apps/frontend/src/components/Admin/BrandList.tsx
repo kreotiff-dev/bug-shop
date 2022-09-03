@@ -24,14 +24,15 @@ const BrandList: FC<BrandListProps> = ({ brands }) => {
   const hundlerDelete = (id: number) => {
     remove({ id });
   };
-  const hundlerUpdate = (id: number) => {
+  const hundlerUpdate = (brand: Brand) => {
     setIsModal(true);
-    setUpdateBrand({ ...updateBrand, id });
+    setUpdateBrand(brand);
   };
 
   const handleOk = () => {
     setIsModal(false);
     update(updateBrand);
+    setUpdateBrand({ id: 0, name: '' });
   };
 
   const handleCancel = () => {
@@ -67,7 +68,7 @@ const BrandList: FC<BrandListProps> = ({ brands }) => {
           /{' '}
           <Popconfirm
             title="Редактировать?"
-            onConfirm={() => hundlerUpdate(record.id)}
+            onConfirm={() => hundlerUpdate(record)}
           >
             <a>Редактировать</a>
           </Popconfirm>

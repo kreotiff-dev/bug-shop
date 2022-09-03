@@ -3,7 +3,16 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react';
 
 export const brandAPI = createApi({
   reducerPath: 'brandAPI',
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:3000/brand' }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: 'http://localhost:3000/brand',
+    prepareHeaders: (headers) => {
+      const token = localStorage.getItem('access_token');
+      if (token) {
+        headers.set('authorization', `Bearer ${token}`);
+      }
+      return headers;
+    },
+  }),
   tagTypes: ['Brand'],
   endpoints: (build) => ({
     create: build.mutation<void, string>({
@@ -14,7 +23,7 @@ export const brandAPI = createApi({
       }),
       invalidatesTags: ['Brand'],
     }),
-    get: build.query<Brand[], void>({
+    get: build.query<{ brands: Brand[]; count: number }, void>({
       query: (_) => ({
         url: '/',
       }),

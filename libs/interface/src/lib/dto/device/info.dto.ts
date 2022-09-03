@@ -1,12 +1,12 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { IsNotEmpty, IsString } from "class-validator";
+import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class deviceInfo {
   @IsNotEmpty()
   @IsString()
   @ApiProperty({
     description: 'Название характеристики',
-    type: String
+    type: String,
   })
   title!: string;
 
@@ -14,7 +14,7 @@ export class deviceInfo {
   @IsString()
   @ApiProperty({
     description: 'Значение характеристики',
-    type: String
+    type: String,
   })
   description!: string;
 }
