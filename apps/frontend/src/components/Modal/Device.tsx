@@ -10,6 +10,7 @@ import React from 'react';
 import { brandAPI } from '../../service/brand';
 import { deviceAPI } from '../../service/device';
 import { typeAPI } from '../../service/type';
+import { rules } from '../../utils/rules';
 
 interface info extends deviceInfo {
   number: number;
@@ -80,7 +81,10 @@ const DeviceModal: React.FC<CreateDeviceProps> = ({
       info.map((i) => (i.number === number ? { ...i, [key]: value } : i))
     );
   };
-  const handleOk = async () => {
+  const handleOk = () => {
+    form.submit();
+  };
+  const submit =  async () => {
     const data = new FormData();
     data.append('file', picture as any);
     data.append('info', JSON.stringify(info));
@@ -135,8 +139,7 @@ const DeviceModal: React.FC<CreateDeviceProps> = ({
         })
         .catch((error) => message.error(error.data.message));
     }
-  };
-
+  }
   const reset = () => {
     form.resetFields();
     setIsVisible(false);
@@ -148,13 +151,14 @@ const DeviceModal: React.FC<CreateDeviceProps> = ({
   }
   return (
     <Modal visible={visible} onOk={handleOk} onCancel={reset}>
-      <Form form={form}>
+      <Form form={form} onFinish={submit}>
         <Form.Item
           name="type"
           initialValue={
             types?.types.find((item) => item.id === parseInt(device?.typeId))
               ?.name
           }
+          rules={[rules.required()]}
         >
           <Select
             placeholder="Выберите категорию"
@@ -174,7 +178,8 @@ const DeviceModal: React.FC<CreateDeviceProps> = ({
           initialValue={
             brands?.brands.find((item) => item.id === parseInt(device?.brandId))
               ?.name
-          }
+          } 
+          rules={[rules.required()]}
         >
           <Select
             placeholder="Выберите бренд"
@@ -189,14 +194,14 @@ const DeviceModal: React.FC<CreateDeviceProps> = ({
             })}
           </Select>
         </Form.Item>
-        <Form.Item name="name" initialValue={oldDevice?.name}>
+        <Form.Item name="name" initialValue={oldDevice?.name} rules={[rules.required()]}>
           <Input
             placeholder="Введите название устройства"
             value={device.name}
             onChange={(e) => setDevice({ ...device, name: e.target.value })}
           />
         </Form.Item>
-        <Form.Item name="price" initialValue={oldDevice?.price.toString()}>
+        <Form.Item name="price" initialValue={oldDevice?.price.toString()} rules={[rules.required()]}>
           <Input
             placeholder="Введите стоимость"
             type={'number'}
@@ -218,8 +223,9 @@ const DeviceModal: React.FC<CreateDeviceProps> = ({
         </Form.Item>
         {info?.map((item) => {
           return (
-            <Form.Item key={item.number}>
+            <Form.Item key={item.number} name={`${item.number}`} rules={[rules.required()]}>
               <Input
+                
                 value={item.title}
                 onChange={(e) =>
                   changeInfo('title', e.target.value, item.number)

@@ -1,9 +1,11 @@
-import { Button, Col, Input, message, Modal, Row } from 'antd';
+import { Button, Col, Form, Input, message, Modal, Row } from 'antd';
 import React, { useState } from 'react';
+import { rules } from '../../utils/rules';
 import { typeAPI } from './../../service/type';
 import TypeList from './TypeList';
 
 const AdminType = () => {
+  const [form] = Form.useForm();
   const { data: types, isLoading } = typeAPI.useGetQuery();
   const [create] = typeAPI.useCreateMutation();
   const [isModal, setIsModal] = useState(false);
@@ -13,25 +15,27 @@ const AdminType = () => {
     return <h1>Загрузка..</h1>;
   }
   const handleOk = () => {
-    setIsModal(false);
-    create(name)
-      .unwrap()
-      .then(() => {
-        message.success('Бренд добавлен');
-        setName('');
-      })
-      .catch((e) => {
-        message.error(e.data.message);
-        setName('');
-      });
+    form.submit();
   };
   const onClick = () => {
     setIsModal(true);
   };
   const handleCancel = () => {
     setIsModal(false);
-    setName('');
+    form.resetFields();
   };
+  const submit = () => {
+    create(name)
+      .unwrap()
+      .then(() => {
+        message.success('Бренд добавлен');
+        setIsModal(false);
+        form.resetFields();
+      })
+      .catch((e) => {
+        message.error(e.data.message);
+      });
+  }
   return (
     <>
       <h1 className="h1 title">Категории</h1>
@@ -47,11 +51,15 @@ const AdminType = () => {
         onOk={handleOk}
         onCancel={handleCancel}
       >
-        <Input
-          placeholder="Введите название бренда"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
+        <Form form={form} onFinish={submit}>
+          <Form.Item name={'name'} rules={[rules.required()]}>
+            <Input
+              placeholder="Введите название бренда"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </Form.Item>
+        </Form>
       </Modal>
     </>
   );

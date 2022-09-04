@@ -2,7 +2,8 @@ import React, { FC, useState } from 'react';
 import { Type } from '@prisma/client';
 import { typeAPI } from './../../service/type';
 import Popconfirm from 'antd/lib/popconfirm';
-import { Input, Modal, Table } from 'antd';
+import { Form, Input, message, Modal, Table } from 'antd';
+import { rules } from '../../utils/rules';
 
 type DataTable = {
   key: number;
@@ -15,6 +16,7 @@ type TypeListProps = {
 };
 
 const TypeList: FC<TypeListProps> = ({ types }) => {
+  const [form] = Form.useForm();
   const [isModal, setIsModal] = useState(false);
   const [remove] = typeAPI.useDeleteMutation();
   const [update] = typeAPI.useUpdateMutation();
@@ -31,14 +33,22 @@ const TypeList: FC<TypeListProps> = ({ types }) => {
   };
 
   const handleOk = () => {
-    setIsModal(false);
-    update(updateType);
+    form.submit();
   };
 
   const handleCancel = () => {
     setIsModal(false);
-    setUpdateType({ id: 0, name: '' });
+    form.resetFields();
   };
+  const submit = () => {
+    
+    update(updateType).unwrap().then(()=>{
+      setIsModal(false);
+      message.success('Данные обновлены')
+      setIsModal(false);
+      form.resetFields();
+    }).catch(e => message.error(e.data.message))
+  }
   const dataTable: DataTable[] = [];
   types.forEach((item) => {
     dataTable.push({
@@ -84,6 +94,12 @@ const TypeList: FC<TypeListProps> = ({ types }) => {
         onOk={handleOk}
         onCancel={handleCancel}
       >
+        <Form form={form} onFinish={submit}>
+          <Form.Item
+            name='name'
+            rules={[rules.required()]}
+          >
+            
         <Input
           placeholder="Введите новое название категории"
           value={updateType.name}
@@ -91,6 +107,8 @@ const TypeList: FC<TypeListProps> = ({ types }) => {
             setUpdateType({ ...updateType, name: e.target.value })
           }
         />
+          </Form.Item>
+        </Form>
       </Modal>
     </>
   );

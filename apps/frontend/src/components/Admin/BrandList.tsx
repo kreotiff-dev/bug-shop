@@ -1,7 +1,8 @@
 import React, { FC, useState } from 'react';
-import { Input, Modal, Popconfirm, Table } from 'antd';
+import { Form, Input, message, Modal, Popconfirm, Table } from 'antd';
 import { Brand } from '@prisma/client';
 import { brandAPI } from '../../service/brand';
+import { rules } from '../../utils/rules';
 
 type DataTable = {
   key: number;
@@ -14,6 +15,7 @@ type BrandListProps = {
 };
 
 const BrandList: FC<BrandListProps> = ({ brands }) => {
+  const [form] = Form.useForm();
   const [isModal, setIsModal] = useState(false);
   const [remove] = brandAPI.useDeleteMutation();
   const [update] = brandAPI.useUpdateMutation();
@@ -30,15 +32,21 @@ const BrandList: FC<BrandListProps> = ({ brands }) => {
   };
 
   const handleOk = () => {
-    setIsModal(false);
-    update(updateBrand);
-    setUpdateBrand({ id: 0, name: '' });
+    form.submit()
   };
 
   const handleCancel = () => {
     setIsModal(false);
-    setUpdateBrand({ id: 0, name: '' });
+    form.resetFields();
   };
+
+  const submit = () => {
+    update(updateBrand).unwrap().then(() => {
+      form.resetFields();
+      setIsModal(false);
+      message.success('Бренд добавлен')
+    }).catch(e=>message.error(e.data.message))
+  }
 
   const dataTable: DataTable[] = [];
   brands.forEach((item) => {
@@ -85,13 +93,17 @@ const BrandList: FC<BrandListProps> = ({ brands }) => {
         onOk={handleOk}
         onCancel={handleCancel}
       >
-        <Input
-          placeholder="Введите новое название бренда"
-          value={updateBrand.name}
-          onChange={(e) =>
-            setUpdateBrand({ ...updateBrand, name: e.target.value })
-          }
-        />
+        <Form form={form} onFinish={submit}>
+          <Form.Item name='brand' rules={[rules.required()]}>
+            <Input
+              placeholder="Введите новое название бренда"
+              value={updateBrand.name}
+              onChange={(e) =>
+                setUpdateBrand({ ...updateBrand, name: e.target.value })
+              }
+            />
+          </Form.Item>
+        </Form>
       </Modal>
     </>
   );

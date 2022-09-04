@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { Button, Col, Input, message, Modal, Row } from 'antd';
+import { Button, Col, Form, Input, message, Modal, Row } from 'antd';
 import BrandList from './BrandList';
 import { brandAPI } from '../../service/brand';
 import { Brand } from '@prisma/client';
+import { rules } from '../../utils/rules';
 
 const AdminBrand = () => {
+  const [form] = Form.useForm();
   const { data: brands, isLoading } = brandAPI.useGetQuery();
   const [create] = brandAPI.useCreateMutation();
   const [isModal, setIsModal] = useState(false);
@@ -19,22 +21,25 @@ const AdminBrand = () => {
   };
 
   const handleOk = () => {
-    setIsModal(false);
+    form.submit();
+  };
+  const submit = () => {
     create(name)
       .unwrap()
       .then(() => {
         message.success('Бренд добавлен');
         setName('');
+        setIsModal(false);
       })
       .catch((e) => {
         message.error(e.data.message);
         setName('');
       });
-  };
+  }
 
   const handleCancel = () => {
     setIsModal(false);
-    setName('');
+    form.resetFields();
   };
   return (
     <>
@@ -55,11 +60,16 @@ const AdminBrand = () => {
         onOk={handleOk}
         onCancel={handleCancel}
       >
+        <Form form={form} onFinish={submit}>
+          <Form.Item name='name' rules={[rules.required()]}>
+            
         <Input
           placeholder="Введите название бренда"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
+          </Form.Item>
+        </Form>
       </Modal>
     </>
   );
