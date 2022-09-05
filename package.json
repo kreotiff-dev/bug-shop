@@ -8,6 +8,7 @@
     "build": "nx build",
     "test": "nx test",
     "start:prod": "node dist/apps/backend/main.js",
+    "build:frontend": "nx build frontend --prod",
     "start:migrate:prod": "prisma migrate deploy && npm run start:prod",
     "db:dev:rm": "docker compose rm store-db -s -f -v",
     "db:dev:up": "docker compose up store-db -d",

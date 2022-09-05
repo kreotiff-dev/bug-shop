@@ -75,19 +75,16 @@ const TypeList: FC<TypeListProps> = ({ types }) => {
             <a>Удалить</a>
           </Popconfirm>{' '}
           /{' '}
-          <Popconfirm
-            title="Редактировать?"
-            onConfirm={() => hundlerUpdate(record)}
-          >
-            <a>Редактировать</a>
-          </Popconfirm>
+            <a onClick={() => hundlerUpdate(record)}>Редактировать</a>
         </>
       ),
     },
   ];
   return (
     <>
-      <Table columns={columns} dataSource={dataTable} pagination={false} />
+      <div className='type__list'>
+        <Table columns={columns} dataSource={dataTable} pagination={false} />
+      </div>
       <Modal
         title="Обновление"
         visible={isModal}
@@ -99,14 +96,13 @@ const TypeList: FC<TypeListProps> = ({ types }) => {
             name='name'
             rules={[rules.required()]}
           >
-            
-        <Input
-          placeholder="Введите новое название категории"
-          value={updateType.name}
-          onChange={(e) =>
-            setUpdateType({ ...updateType, name: e.target.value })
-          }
-        />
+            <Input
+              placeholder="Введите новое название категории"
+              value={updateType.name}
+              onChange={(e) =>
+                setUpdateType({ ...updateType, name: e.target.value })
+              }
+            />
           </Form.Item>
         </Form>
       </Modal>

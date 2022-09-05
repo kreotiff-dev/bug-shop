@@ -38,11 +38,13 @@ const BrandList: FC<BrandListProps> = ({ brands }) => {
   const handleCancel = () => {
     setIsModal(false);
     form.resetFields();
+    setUpdateBrand({id:0,name:''})
   };
 
   const submit = () => {
     update(updateBrand).unwrap().then(() => {
       form.resetFields();
+      setUpdateBrand({id:0,name:''})
       setIsModal(false);
       message.success('Бренд добавлен')
     }).catch(e=>message.error(e.data.message))
@@ -74,19 +76,17 @@ const BrandList: FC<BrandListProps> = ({ brands }) => {
             <a>Удалить</a>
           </Popconfirm>{' '}
           /{' '}
-          <Popconfirm
-            title="Редактировать?"
-            onConfirm={() => hundlerUpdate(record)}
-          >
-            <a>Редактировать</a>
-          </Popconfirm>
+            <a onClick={() => hundlerUpdate(record)}>Редактировать</a>
         </>
       ),
     },
   ];
   return (
     <>
-      <Table columns={columns} dataSource={dataTable} pagination={false} />
+      <div className='brand__list'>
+        <Table columns={columns} dataSource={dataTable} pagination={false} />
+      </div>
+      {isModal && 
       <Modal
         title="Обновление"
         visible={isModal}
@@ -94,7 +94,7 @@ const BrandList: FC<BrandListProps> = ({ brands }) => {
         onCancel={handleCancel}
       >
         <Form form={form} onFinish={submit}>
-          <Form.Item name='brand' rules={[rules.required()]}>
+          <Form.Item name='brand' rules={[rules.required()]} >
             <Input
               placeholder="Введите новое название бренда"
               value={updateBrand.name}
@@ -104,7 +104,7 @@ const BrandList: FC<BrandListProps> = ({ brands }) => {
             />
           </Form.Item>
         </Form>
-      </Modal>
+      </Modal>}
     </>
   );
 };

@@ -287,3 +287,22 @@ img {
 .admin__device-table {
   flex: 1;
 }
+
+.brand,
+.type{
+  display: flex;
+  flex-direction: column;
+}
+.brand__list,
+.type__list{
+  height: 495px;
+}
+.brand__pagination,
+.type__pagination{
+  margin: 20px auto 0; 
+}
+.brand__btn button,
+.type__btn button{
+  margin-bottom: 10%;
+  width: 100%;
+}

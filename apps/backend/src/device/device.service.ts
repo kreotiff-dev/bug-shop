@@ -266,6 +266,9 @@ export class DeviceService {
         deviceId: dto.id,
       },
     });
+    if(candidate.img){
+      this.fileService.removeFile(candidate.img);
+    }
     return await this.prisma.device.delete({
       where: {
         id: dto.id,

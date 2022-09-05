@@ -1,6 +1,5 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { Basket } from '@prisma/client';
 import { PrismaService } from 'nestjs-prisma';
 
 const logger = new Logger();
@@ -11,6 +10,15 @@ export class BasketService {
 
   async addDevice(token: string, dto: { idDevice: number }) {
     const basket = await this.getBasketByToken(token);
+    const candidate = await this.prisma.basketDevice.findFirst({
+      where:{
+        deviceId: dto.idDevice
+      }
+    })
+    if(candidate){
+      logger.error('Устройство уже добавлено в корзину')
+      throw new HttpException('Устройство уже добавлено в корзину', HttpStatus.BAD_REQUEST);
+    }
     const device = await this.prisma.device.findUnique({
       where: { id: dto.idDevice },
     });
@@ -71,6 +79,13 @@ export class BasketService {
     dto: { idDevice: number; count: number }
   ) {
     const basket = await this.getBasketByToken(token);
+    if(dto.count === 0){
+      return await this.prisma.basketDevice.delete({
+        where:{
+          id:dto.idDevice
+        }
+      })
+    }
     const basketDevice = await this.prisma.basketDevice.findFirst({
       where: {
         basketId: basket.id,

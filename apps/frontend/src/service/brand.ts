@@ -23,9 +23,9 @@ export const brandAPI = createApi({
       }),
       invalidatesTags: ['Brand'],
     }),
-    get: build.query<{ brands: Brand[]; count: number }, void>({
-      query: (_) => ({
-        url: '/',
+    get: build.query<{ brands: Brand[]; count: number }, string | void>({
+      query: (query) => ({
+        url: `/${query? query : ''}`,
       }),
       providesTags: ['Brand'],
     }),

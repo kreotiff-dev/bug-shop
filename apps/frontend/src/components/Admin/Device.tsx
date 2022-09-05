@@ -38,6 +38,7 @@ const AdminDevice = () => {
             current={page}
             total={data?.count}
             defaultCurrent={1}
+            defaultPageSize={8}
             onChange={onChange}
             className="admin__device-pagination"
           />

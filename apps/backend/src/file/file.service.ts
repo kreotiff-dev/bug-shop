@@ -3,6 +3,16 @@ import * as path from 'path';
 import * as fs from 'fs';
 import * as uuid from 'uuid';
 
+const filePath = path.resolve(
+  __dirname,
+  '..',
+  '..',
+  '..',
+  'apps',
+  'backend',
+  'src',
+  'static'
+);
 @Injectable()
 export class FileService {
   createFile(file): string {
@@ -12,16 +22,7 @@ export class FileService {
       }
       const fileExtension = file.originalname.split('.').pop();
       const fileName = uuid.v4() + '.' + fileExtension;
-      const filePath = path.resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        'apps',
-        'backend',
-        'src',
-        'static'
-      );
+
       const fullPath = path.join(filePath, fileName);
       fs.writeFile(
         fullPath,
@@ -39,7 +40,14 @@ export class FileService {
     }
   }
 
-  // removeFile(fileName: string) {
-
-  // }
+  removeFile(fileName: string) {
+    try{
+      if(!fileName) return '';
+      fs.unlink(path.join(filePath,fileName), err => {
+        if(err) throw err;
+      })
+    }catch(e){
+      throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
 }

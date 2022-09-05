@@ -23,9 +23,9 @@ export const typeAPI = createApi({
       }),
       invalidatesTags: ['Type'],
     }),
-    get: build.query<{ types: Type[]; count: number }, void>({
-      query: (_) => ({
-        url: '/',
+    get: build.query<{ types: Type[]; count: number }, string | void>({
+      query: (query) => ({
+        url: `/${query ? query : ''}`,
       }),
       providesTags: ['Type'],
     }),
