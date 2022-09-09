@@ -1,24 +1,16 @@
 import { User } from '@prisma/client';
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react';
+import { createApi } from '@reduxjs/toolkit/dist/query/react';
 import { updateUserDto } from '@store/interface';
+import { baseQueryWithReauth } from './initial';
 
 export const userAPI = createApi({
   reducerPath: 'userAPI',
-  baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:3000/user',
-    prepareHeaders: (headers) => {
-      const token = localStorage.getItem('access_token');
-      if (token) {
-        headers.set('authorization', `Bearer ${token}`);
-      }
-      return headers;
-    },
-  }),
+  baseQuery: baseQueryWithReauth,
   tagTypes: ['User'],
   endpoints: (build) => ({
     get: build.query<User, null>({
       query: (_) => ({
-        url: '',
+        url: 'user/',
         method: 'GET',
       }),
       providesTags: ['User'],
@@ -28,7 +20,7 @@ export const userAPI = createApi({
       updateUserDto
     >({
       query: (args) => ({
-        url: '/',
+        url: 'user/',
         method: 'PATCH',
         body: args,
       }),
@@ -46,7 +38,7 @@ export const userAPI = createApi({
       { newPassword: string; oldPassword: string }
     >({
       query: (args) => ({
-        url: '/password',
+        url: 'user/password',
         method: 'PATCH',
         body: args,
       }),
@@ -54,7 +46,7 @@ export const userAPI = createApi({
     }),
     delete: build.mutation<void, { password: string }>({
       query: (args) => ({
-        url: '/',
+        url: 'user/',
         method: 'DELETE',
         body: args,
       }),

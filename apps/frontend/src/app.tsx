@@ -9,6 +9,9 @@ export function App() {
   const token = localStorage.getItem('access_token');
 
   const location = useLocation();
+  const adminPath = location.pathname.slice(0, 6) === '/admin';
+  const basketPath = location.pathname.slice(0, 7) === '/basket';
+  const profilePath = location.pathname.slice(0,8) === '/profile'
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -16,6 +19,11 @@ export function App() {
       setIsAuth(true);
     } else if (location.pathname === REGISTRATION_ROUTE) {
       navigate(REGISTRATION_ROUTE);
+    } else if(adminPath || basketPath || profilePath){
+      navigate('/shop');
+      setIsAuth(false)
+    }else{
+      setIsAuth(false)
     }
   }, [token]);
 

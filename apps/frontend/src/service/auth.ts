@@ -1,18 +1,20 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react';
+import { createApi } from '@reduxjs/toolkit/dist/query/react';
 import { basketAPI } from './basket';
+import { baseQueryWithReauth } from './initial';
 import { userAPI } from './user';
 
 export const authAPI = createApi({
   reducerPath: 'authAPI',
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:3000/auth' }),
+  baseQuery: baseQueryWithReauth,
   tagTypes: ['Basket'],
+  
   endpoints: (build) => ({
     login: build.mutation<
       { access_token: string; refresh_token: string },
       { email: string; password: string }
     >({
       query: (args) => ({
-        url: '/login',
+        url: '/auth/login',
         method: 'POST',
         body: args,
       }),
@@ -25,14 +27,14 @@ export const authAPI = createApi({
         } catch (error) {
           console.log(error);
         }
-      },
+      }
     }),
     registration: build.mutation<
       { access_token: string; refresh_token: string },
       { email: string; password: string }
     >({
       query: (args) => ({
-        url: '/registration',
+        url: '/auth/registration',
         method: 'POST',
         body: args,
       }),
@@ -49,7 +51,7 @@ export const authAPI = createApi({
     }),
     logout: build.mutation<void, void>({
       query: (_) => ({
-        url: '/logout',
+        url: '/auth/logout',
         method: 'POST',
       }),
       async onQueryStarted(_, { dispatch }) {
@@ -69,10 +71,10 @@ export const authAPI = createApi({
       void
     >({
       query: () => ({
-        url: 'refresh',
+        url: '/auth/refresh',
         method: 'POST',
       }),
-      async onQueryStarted(_, { queryFulfilled, dispatch }) {
+      async onQueryStarted(_, { queryFulfilled }) {
         try {
           const data = (await queryFulfilled).data;
           localStorage.setItem('access_token', data.access_token);

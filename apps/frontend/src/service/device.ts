@@ -1,26 +1,17 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react';
+import { createApi } from '@reduxjs/toolkit/dist/query/react';
 import { UpdateInfoDeviceDto } from '@store/interface';
 import { Device, Type, Brand, DeviceInfo } from '@prisma/client';
 import { basketAPI } from './basket';
-import { userAPI } from './user';
+import { baseQueryWithReauth } from './initial';
 
 export const deviceAPI = createApi({
   reducerPath: 'deviceAPI',
-  baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:3000/device',
-    prepareHeaders: (headers) => {
-      const token = localStorage.getItem('access_token');
-      if (token) {
-        headers.set('authorization', `Bearer ${token}`);
-      }
-      return headers;
-    },
-  }),
+  baseQuery: baseQueryWithReauth,
   tagTypes: ['Device', 'Brand', 'Type', 'DeviceInfo', 'Basket'],
   endpoints: (build) => ({
     create: build.mutation<void, FormData>({
       query: (data) => ({
-        url: '/',
+        url: '/device',
         method: 'POST',
         body: data,
       }),
@@ -28,7 +19,7 @@ export const deviceAPI = createApi({
     }),
     update: build.mutation<void, { data: FormData; id: number }>({
       query: (args) => ({
-        url: `/${args.id}`,
+        url: `/device/${args.id}`,
         method: 'PATCH',
         body: args.data,
       }),
@@ -36,19 +27,19 @@ export const deviceAPI = createApi({
     }),
     get: build.query<{ devices: Device[]; count: number }, string | void>({
       query: (args) => ({
-        url: '/' + args,
+        url: '/device/' + args,
       }),
       providesTags: ['Device'],
     }),
     getInfo: build.query<UpdateInfoDeviceDto[], number>({
       query: (id) => ({
-        url: `/info/${id}`,
+        url: `/device/info/${id}`,
       }),
       providesTags: ['DeviceInfo'],
     }),
     getById: build.query<Device, number>({
       query: (id) => ({
-        url: `/${id}`,
+        url: `/device/${id}`,
         method: 'GET',
       }),
       providesTags: ['Device'],
@@ -58,14 +49,14 @@ export const deviceAPI = createApi({
       number
     >({
       query: (id) => ({
-        url: `/full/${id}`,
+        url: `/device/full/${id}`,
         method: 'GET',
       }),
       providesTags: ['Device', 'Brand', 'Type', 'DeviceInfo'],
     }),
     delete: build.mutation<void, number>({
       query: (id) => ({
-        url: `/${id}`,
+        url: `/device/${id}`,
         method: 'DELETE',
       }),
       async onQueryStarted(_, { dispatch }) {

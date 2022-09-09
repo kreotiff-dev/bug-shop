@@ -15,7 +15,7 @@ export class AuthController {
   @Post('login')
   async login(
     @Body() dto: AuthDto,
-    @Res({ passthrough: true }) response: Response
+    @Res({ passthrough: true }) response: Response,
   ) {
     const data = await this.service.login(dto);
     response.cookie('refreshToken', data.refresh_token, {

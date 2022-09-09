@@ -1,35 +1,27 @@
 import { BasketDevice } from '@prisma/client';
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react';
+import { createApi } from '@reduxjs/toolkit/dist/query/react';
+import { baseQueryWithReauth } from './initial';
 
 export const basketAPI = createApi({
   reducerPath: 'basketAPI',
-  baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:3000/basket',
-    prepareHeaders: (headers) => {
-      const token = localStorage.getItem('access_token');
-      if (token) {
-        headers.set('authorization', `Bearer ${token}`);
-      }
-      return headers;
-    },
-  }),
+  baseQuery: baseQueryWithReauth,
   tagTypes: ['Basket'],
   endpoints: (build) => ({
     get: build.query<BasketDevice[], void>({
       query: (_) => ({
-        url: '/device',
+        url: '/basket/device',
       }),
       providesTags: ['Basket'],
     }),
     getPrice: build.query<number, void>({
       query: (_) => ({
-        url: '/price',
+        url: '/basket/price',
       }),
       providesTags: ['Basket'],
     }),
     addDevice: build.mutation<void, { idDevice: number }>({
       query: (args) => ({
-        url: '/add-device',
+        url: '/basket/add-device',
         method: 'POST',
         body: args,
       }),
@@ -37,7 +29,7 @@ export const basketAPI = createApi({
     }),
     deleteDevice: build.mutation<void, { idDevice: number }>({
       query: (args) => ({
-        url: '/',
+        url: '/basket',
         method: 'DELETE',
         body: args,
       }),
@@ -45,7 +37,7 @@ export const basketAPI = createApi({
     }),
     updateDevice: build.mutation<void, { count: number; idDevice: number }>({
       query: (args) => ({
-        url: '/',
+        url: '/basket',
         method: 'PATCH',
         body: args,
       }),
@@ -53,7 +45,7 @@ export const basketAPI = createApi({
     }),
     isBasket: build.query<boolean, { idDevice: number }>({
       query: (args) => ({
-        url: '/is-basket',
+        url: '/basket/is-basket',
         method: 'POST',
         body: args,
       }),

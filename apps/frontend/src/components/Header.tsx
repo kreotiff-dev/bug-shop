@@ -11,6 +11,7 @@ const { Header: AHeader } = Layout;
 const Header = () => {
   const location = useLocation();
   const { isAuth } = useContext(AuthContext);
+  
   const isLogin = location.pathname === LOGIN_ROUTE;
   return (
     <AHeader className="header">

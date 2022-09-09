@@ -6,6 +6,8 @@ import { deviceAPI } from './../service/device';
 import { basketAPI } from './../service/basket';
 import { userAPI } from '../service/user';
 
+
+
 const rootReducer = combineReducers({
   [authAPI.reducerPath]: authAPI.reducer,
   [typeAPI.reducerPath]: typeAPI.reducer,
