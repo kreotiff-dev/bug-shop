@@ -113,11 +113,12 @@ export class UserService {
         userId: id,
       },
     });
-    return await this.prisma.user.delete({
+    await this.prisma.user.delete({
       where: {
         id: user.id,
       },
     });
+    return {message: 'Пользователь удален'}
   }
 
   async update(token: string, dto: updateUserDto) {
@@ -173,7 +174,7 @@ export class UserService {
       );
     }
     const hash = await argon.hash(dto.newPassword);
-    return await this.prisma.user.update({
+    await this.prisma.user.update({
       where: {
         id: user.id,
       },
@@ -181,6 +182,7 @@ export class UserService {
         password: hash,
       },
     });
+    return {message:'Пароль изменен'}
   }
 
   async decode(token: string) {

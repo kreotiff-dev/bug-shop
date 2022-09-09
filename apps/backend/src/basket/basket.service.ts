@@ -22,7 +22,7 @@ export class BasketService {
     const device = await this.prisma.device.findUnique({
       where: { id: dto.idDevice },
     });
-    const basketDevice = await this.prisma.basketDevice.create({
+    await this.prisma.basketDevice.create({
       data: {
         basketId: basket.id,
         deviceId: dto.idDevice,
@@ -34,7 +34,7 @@ export class BasketService {
         totalPrice: basket.totalPrice + device.price,
       },
     });
-    return basketDevice;
+    return {message:'Устройство успешно добавлено в корзину'};
   }
 
   async deleteDevice(token: string, dto: { idDevice: number }) {
@@ -48,7 +48,7 @@ export class BasketService {
         deviceId: dto.idDevice,
       },
     });
-    const deviceDelete = await this.prisma.basketDevice.delete({
+    await this.prisma.basketDevice.delete({
       where: {
         id: basketDevice.id,
       },
@@ -59,7 +59,7 @@ export class BasketService {
         totalPrice: basket.totalPrice - device.price * basketDevice.count,
       },
     });
-    return deviceDelete;
+    return {message:'Устройство успешно удалено из корзины'};
   }
 
   async getBasketDevice(token: string) {
@@ -93,7 +93,7 @@ export class BasketService {
       },
     });
     //У всех устройств в корзине меняется кол-во
-    const deviceUpdate = await this.prisma.basketDevice.update({
+    await this.prisma.basketDevice.update({
       where: {
         id: basketDevice.id,
       },
@@ -114,7 +114,7 @@ export class BasketService {
       },
     });
 
-    return deviceUpdate;
+    return {message:'Кол-во успешно изменено'};
   }
 
   async isBasket(token: string, dto: { idDevice: number }) {

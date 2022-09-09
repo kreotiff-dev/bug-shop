@@ -20,11 +20,12 @@ export class TypeService {
         HttpStatus.BAD_REQUEST
       );
     }
-    return await this.prisma.type.create({
+    await this.prisma.type.create({
       data: {
         name: dto.name,
       },
     });
+    return {message:'Категория успешно создана'}
   }
   async getAll(query: { page?: string; limit?: string }) {
     const page = parseInt(query.page) || 1;
@@ -68,7 +69,7 @@ export class TypeService {
         HttpStatus.BAD_REQUEST
       );
     }
-    return await this.prisma.type.update({
+    await this.prisma.type.update({
       where: {
         id: dto.id,
       },
@@ -76,6 +77,7 @@ export class TypeService {
         name: dto.name,
       },
     });
+    return {message:'Категория успешно обновлена'}
   }
   async delete(dto: { id: number }) {
     const candidate = await this.prisma.type.findUnique({
@@ -87,10 +89,11 @@ export class TypeService {
       logger.error('Категория не найдена');
       throw new HttpException(`Категория не найдена`, HttpStatus.BAD_REQUEST);
     }
-    return await this.prisma.type.delete({
+    await this.prisma.type.delete({
       where: {
         id: dto.id,
       },
     });
+    return {message: 'Категория успешно удалена'}
   }
 }

@@ -1,5 +1,5 @@
-import { Body, Controller, Post, Req, Res } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Post, Req, Res, HttpStatus, HttpCode } from '@nestjs/common';
+import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthDto } from '@store/interface';
 import { Response, Request } from 'express';
 import { AuthService } from './auth.service';
@@ -8,7 +8,10 @@ import { AuthService } from './auth.service';
 @Controller('auth')
 export class AuthController {
   constructor(private service: AuthService) {}
-  @ApiOperation({ summary: 'Вход' })
+  @ApiOperation({ summary: 'Вход', description:'Позволяет пользователю авторизироваться в системе' })
+  @ApiResponse({description:'Возвращает пару access и refresh токенов', status: HttpStatus.OK})
+  @ApiResponse({description:'Логин или пароль не верный', status: HttpStatus.BAD_REQUEST})
+  @HttpCode(HttpStatus.OK)
   @Post('login')
   async login(
     @Body() dto: AuthDto,
@@ -22,7 +25,10 @@ export class AuthController {
     return data;
   }
   //registration
-  @ApiOperation({ summary: 'Регистрация' })
+  @ApiOperation({ summary: 'Регистрация',description:'Позволяет пользователю зарегистрироваться' })
+  @ApiResponse({description:'Возвращает пару access и refresh токенов', status: HttpStatus.OK})
+  @ApiResponse({description:'Логин или пароль не верный', status: HttpStatus.BAD_REQUEST})
+  @HttpCode(HttpStatus.OK)
   @Post('registration')
   async registration(
     @Body() dto: AuthDto,
@@ -37,7 +43,9 @@ export class AuthController {
     return data;
   }
 
-  @ApiOperation({ summary: 'Выход из системы' })
+  @ApiOperation({ summary: 'Выход из системы',description:'Позволяет пользователю выйти из своей учетной записи' })
+  @ApiResponse({description:'Возвращает сообщение об успешном выходе', status: HttpStatus.OK})
+  @HttpCode(HttpStatus.OK)
   @Post('logout')
   async logout(
     @Req() request: Request,
@@ -49,7 +57,10 @@ export class AuthController {
     return token;
   }
 
-  @ApiOperation({ summary: 'Запрос на обновление refresh token' })
+  @ApiOperation({ summary: 'Запрос на обновление токенов',description:'Позволяет пользователю получить новую пару токенов' })
+  @ApiResponse({description:'Возвращает пару access и refresh токенов', status: HttpStatus.OK})
+  @ApiResponse({description:'Токен устарел', status: HttpStatus.UNAUTHORIZED})
+  @HttpCode(HttpStatus.OK)
   @Post('refresh')
   async refresh(@Req() request: Request, @Res() response: Response) {
     const refreshToken = request.cookies['refreshToken'];

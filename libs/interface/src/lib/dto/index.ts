@@ -7,3 +7,8 @@ export * from './device/updateInfo.dto';
 export * from './device/query.dto';
 export * from './brand/create.dto';
 export * from './type/create.dto';
+export * from './basket/updateCount.dto'
+export * from './idDevice.dto';
+export * from './password.dto';
+export * from './resetPassword.dto'
+export * from './name.dto'

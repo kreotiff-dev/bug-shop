@@ -1,12 +1,13 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsNotEmpty } from "class-validator";
 
-export class createTypeDto {
+
+export class nameDto{
     @ApiProperty({
-        description: 'Название категории',
-        type: String,
-        example: 'Телефон'
+        name:'name',
+        example:'xiaomi',
+        required: true,
     })
     @IsNotEmpty({message:'Поле name не может быть пустым'})
-    name!: string;
+    name!:string;
 }

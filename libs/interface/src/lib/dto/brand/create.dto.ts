@@ -3,10 +3,11 @@ import { IsNotEmpty, IsString } from 'class-validator';
 
 export class createBrandDto {
   @ApiProperty({
-    description: 'Название бренда',
+    title: 'Название бренда',
     type: String,
+    example:'apple',
+    uniqueItems: true
   })
-  @IsString()
-  @IsNotEmpty()
+  @IsNotEmpty({message:'Поле name не может быть пустым'})
   name!: string;
 }

@@ -5,40 +5,41 @@ export class UpdateDeviceDto {
   @IsNotEmpty()
   @IsString()
   @ApiProperty({
-    description: 'Название товара',
+    title: 'Название товара',
     type: String,
+    example: 'iPhone 11 PRO',
+    required: false
   })
-  name!: string;
+  name?: string;
 
   @IsNotEmpty()
-  // @IsInt()
-  // @Min(0)
   @ApiProperty({
-    description: 'Стоимость товара',
-    // type: Number,
+    title: 'Стоимость товара',
+    example: '71000',
+    required: false
   })
-  price!: string;
+  price?: string;
 
   @IsNotEmpty()
-  // @IsInt()
-  // @Min(1)
   @ApiProperty({
-    description: 'Id категории',
-    // type: Number,
+    title: 'Id категории',
+    example: '1',
+    required: false
   })
-  typeId!: string;
+  typeId?: string;
 
   @IsNotEmpty()
-  // @IsInt()
-  // @Min(1)
   @ApiProperty({
-    description: 'Id бренда',
-    // type: Number,
+    title: 'Id бренда',
+    example:'1',
+    required: false
   })
-  brandId!: string;
+  brandId?: string;
 
   @ApiProperty({
-    description: 'Характеристики',
+    title: 'Характеристики',
+    example: '[{"title":"Вес","title":"520г"},{"title":"Основная камера","title":"8мп"}]',
+    required: false
   })
   info?: string;
 }

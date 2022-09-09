@@ -67,11 +67,12 @@ export class AuthService {
   }
   async logout(token: string) {
     try {
-      return this.prisma.token.deleteMany({
+      await this.prisma.token.deleteMany({
         where: {
           refresh: token,
         },
       });
+      return {message: 'Вы вышли из системы'}
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         if (error.code === 'P2002') {

@@ -249,7 +249,7 @@ export class DeviceService {
         }
       });
     }
-    return device;
+    return {message:'Устройство успешно обновлено'};
   }
   async delete(dto: { id: number }) {
     const candidate = await this.prisma.device.findUnique({
@@ -269,11 +269,12 @@ export class DeviceService {
     if(candidate.img){
       this.fileService.removeFile(candidate.img);
     }
-    return await this.prisma.device.delete({
+    await this.prisma.device.delete({
       where: {
         id: dto.id,
       },
     });
+    return {message:'Устройство успешно удалено'}
   }
   async getInfo(dto: { id: number }) {
     const candidate = await this.prisma.device.findUnique({
