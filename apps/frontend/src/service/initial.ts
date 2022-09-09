@@ -1,8 +1,5 @@
-import { AuthContext } from './../context/index';
-import { useContext } from 'react';
 import { authAPI } from './auth';
 import { BaseQueryFn, FetchArgs, fetchBaseQuery, FetchBaseQueryError } from '@reduxjs/toolkit/dist/query';
-
 
 export const baseQuery = fetchBaseQuery({
     baseUrl: 'http://localhost:3000',
@@ -13,6 +10,7 @@ export const baseQuery = fetchBaseQuery({
       }
       return headers;
     },
+    credentials: 'include'
   });
   
   export const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async (
@@ -20,24 +18,24 @@ export const baseQuery = fetchBaseQuery({
     api,
     extraOptions
   ) => {
-    const result = await baseQuery(args, api, extraOptions);
-  
-    if (result.error && result.error.status === 401) {
+    let result = await baseQuery(args, api, extraOptions);
+    
+    if (result.error && result.error.status === 401 && localStorage.getItem('access_token')) {
       localStorage.removeItem('access_token')
-        // const refreshResult = await baseQuery({
-        //   url: 'auth/refresh/',
-        //   method: 'POST'
-        // }, api, extraOptions);
+        const refreshResult = await baseQuery({
+          url: 'auth/refresh/',
+          method: 'POST',
+        }, api, extraOptions);
   
-        // if (refreshResult.data) {
-        //     console.log(refreshResult.data);
-            
-  
-        //     // retry the initial query
-        //     result = await baseQuery(args, api, extraOptions);
-        // } else {
-        //     api.dispatch(authAPI.useLogoutMutation);
-        // }
+        if (refreshResult.data) {
+            const stringRes = JSON.stringify(refreshResult.data);
+            const access_token:string = JSON.parse(stringRes).access_token;
+            localStorage.setItem('access_token',access_token)
+            // retry the initial query
+            result = await baseQuery(args, api, extraOptions);
+        } else {
+          api.dispatch(authAPI.endpoints.logout.initiate())
+        }
     }
     return result;
   };

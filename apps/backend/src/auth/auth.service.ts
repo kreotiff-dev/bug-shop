@@ -133,12 +133,12 @@ export class AuthService {
     });
     const email = refreshTokenVerify['email'];
     if (!email) {
-      throw new ForbiddenException();
+      throw new ForbiddenException('Токен не валидный');
     }
     const user = await this.prisma.user.findUnique({
       where: { email: email },
     });
-    if (!user) throw new ForbiddenException('Credentials incorrect');
+    if (!user) throw new ForbiddenException('Токен не валидный');
     return user;
   }
   async refresh(refreshToken: string) {
@@ -166,7 +166,7 @@ export class AuthService {
       return await this.signToken(userData.id, userData.email, userData.role);
     } catch (error) {
       logger.error('Токен устарел');
-      throw new UnauthorizedException({ message: 'Токен устарел' });
+      throw new HttpException('Токен устарел',HttpStatus.BAD_REQUEST);
     }
   }
   async getToken() {

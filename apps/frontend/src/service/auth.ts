@@ -49,6 +49,19 @@ export const authAPI = createApi({
         }
       },
     }),
+    test: build.mutation<'heads' | 'tails', void>({
+      queryFn(arg, queryApi, extraOptions, baseQuery) {
+        const randomVal = Math.random()
+        console.log('test work')
+        if (randomVal < 0.45) {
+          return { data: 'heads' }
+        }
+        if (randomVal < 0.9) {
+          return { data: 'tails' }
+        }
+        return { error: { status: 500, statusText: 'Internal Server Error', data: "Coin landed on it's edge!" } }
+      }
+    }),
     logout: build.mutation<void, void>({
       query: (_) => ({
         url: '/auth/logout',
