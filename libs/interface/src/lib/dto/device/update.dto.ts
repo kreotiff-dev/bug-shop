@@ -10,7 +10,7 @@ export class UpdateDeviceDto {
     example: 'iPhone 11 PRO',
     required: false
   })
-  name?: string;
+  name!: string;
 
   @IsNotEmpty()
   @ApiProperty({
@@ -18,7 +18,7 @@ export class UpdateDeviceDto {
     example: '71000',
     required: false
   })
-  price?: string;
+  price!: string;
 
   @IsNotEmpty()
   @ApiProperty({
@@ -26,7 +26,7 @@ export class UpdateDeviceDto {
     example: '1',
     required: false
   })
-  typeId?: string;
+  typeId!: string;
 
   @IsNotEmpty()
   @ApiProperty({
@@ -34,7 +34,7 @@ export class UpdateDeviceDto {
     example:'1',
     required: false
   })
-  brandId?: string;
+  brandId!: string;
 
   @ApiProperty({
     title: 'Характеристики',

@@ -36,10 +36,12 @@ export const authAPI = createApi({
         method: 'POST',
         body: args,
       }),
-      async onQueryStarted(_, { queryFulfilled }) {
+      async onQueryStarted(_, { queryFulfilled,dispatch }) {
         try {
           const data = (await queryFulfilled).data;
           localStorage.setItem('access_token', data.access_token);
+          dispatch(basketAPI.util.invalidateTags(['Basket']));
+          dispatch(userAPI.util.invalidateTags(['User']));
         } catch (error) {
           console.log(error);
         }

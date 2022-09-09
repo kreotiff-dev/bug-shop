@@ -5,7 +5,7 @@ import {
   UpdateDeviceDto,
   UpdateInfoDeviceDto,
 } from '@store/interface';
-import { Button, Form, Input, message, Modal, Select } from 'antd';
+import { Button, Col, Form, Input, message, Modal, Row, Select } from 'antd';
 import React from 'react';
 import { brandAPI } from '../../service/brand';
 import { deviceAPI } from '../../service/device';
@@ -223,24 +223,33 @@ const DeviceModal: React.FC<CreateDeviceProps> = ({
         </Form.Item>
         {info?.map((item) => {
           return (
-            <Form.Item key={item.number} name={`${item.number}`} rules={[rules.required()]}>
-              <Input
-                
-                value={item.title}
-                onChange={(e) =>
-                  changeInfo('title', e.target.value, item.number)
-                }
-                placeholder="Введите название свойства"
-              />
-              <Input
-                value={item.description}
-                onChange={(e) =>
-                  changeInfo('description', e.target.value, item.number)
-                }
-                placeholder="Введите описание свойства"
-              />
-              <Button onClick={() => removeInfo(item.number)}>Удалить</Button>
-            </Form.Item>
+            <Row key={item.number}>
+              <Col span={8} >
+                <Form.Item name={`title-${item.number}`} rules={[rules.required()]} initialValue={item.title}>
+                  <Input
+                    value={item.title}
+                    onChange={(e) =>
+                      changeInfo('title', e.target.value, item.number)
+                    }
+                    placeholder="Введите название свойства"
+                  />
+                </Form.Item>
+              </Col>
+              <Col span={8} offset={1}>
+              <Form.Item name={`desc-${item.number}`} rules={[rules.required()]} initialValue={item.description}>
+                <Input
+                  value={item.description}
+                  onChange={(e) =>
+                    changeInfo('description', e.target.value, item.number)
+                  }
+                  placeholder="Введите описание свойства"
+                />
+              </Form.Item>
+              </Col>
+              <Col span={5} offset={2}>
+              <Button style={{width:'100%'}} onClick={() => removeInfo(item.number)}>Удалить</Button>
+              </Col>
+            </Row>
           );
         })}
       </Form>
