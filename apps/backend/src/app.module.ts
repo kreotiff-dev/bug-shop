@@ -20,14 +20,7 @@ import { BasketModule } from './basket/basket.module';
     FileModule,
     ServeStaticModule.forRoot({
       rootPath: join(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        'apps',
-        'backend',
-        'src',
-        'static'
+        __dirname,'static'
       ),
     }),
     AuthModule,

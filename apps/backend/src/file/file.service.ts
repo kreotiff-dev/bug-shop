@@ -3,19 +3,14 @@ import * as path from 'path';
 import * as fs from 'fs';
 import * as uuid from 'uuid';
 
+const logger = new Logger();
+
 const filePath = path.resolve(
-  __dirname,
-  '..',
-  '..',
-  '..',
-  'apps',
-  'backend',
-  'src',
-  'static'
+  __dirname,'static'
 );
 @Injectable()
 export class FileService {
-  createFile(file): string {
+  async createFile(file): Promise<string> {
     try {
       if (!file) {
         return '';
@@ -24,6 +19,7 @@ export class FileService {
       const fileName = uuid.v4() + '.' + fileExtension;
 
       const fullPath = path.join(filePath, fileName);
+      await fs.promises.mkdir(filePath, { recursive: true })
       fs.writeFile(
         fullPath,
         Buffer.from(file.buffer),
@@ -32,7 +28,7 @@ export class FileService {
           if (e) {
             throw e;
           }
-        }
+        },
       );
       return fileName;
     } catch (e) {

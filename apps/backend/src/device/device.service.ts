@@ -49,7 +49,7 @@ export class DeviceService {
       logger.error('Категория не найдена');
       throw new HttpException('Категория не найдена', HttpStatus.BAD_REQUEST);
     }
-    const picture = this.fileService.createFile(file);
+    const picture = await this.fileService.createFile(file);
     const device = await this.prisma.device.create({
       data: {
         name: dto.name,
@@ -192,7 +192,7 @@ export class DeviceService {
     }
 
     if (file) {
-      const picture = this.fileService.createFile(file);
+      const picture = await this.fileService.createFile(file);
       await this.prisma.device.update({
         where: { id: dto.id },
         data: {
