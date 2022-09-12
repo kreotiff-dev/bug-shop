@@ -27,6 +27,17 @@ services:
       - .env
     volumes:
       - store-db:/var/lib/postgresql/data
+
+  store-front:
+    container_name: store-front
+    build:
+      context: .
+      dockerfile: Dockerfile.front
+    restart: always
+    ports:
+      - 4200:80
+    env_file:
+      - .env
       
 volumes:
   store-db:
