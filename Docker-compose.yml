@@ -38,10 +38,26 @@ services:
       - 4200:80
     env_file:
       - .env
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    depends_on:
+      - store-db
+    ports:
+      - "5555:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
+      PGADMIN_DEFAULT_PASSWORD: admin
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    restart: always
       
 volumes:
   store-db:
     name: store-db
+  pgadmin:
+    name: pgadmin
 
 networks:
   default:
