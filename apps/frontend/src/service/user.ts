@@ -15,6 +15,13 @@ export const userAPI = createApi({
       }),
       providesTags: ['User'],
     }),
+    getById: build.query<User, number>({
+      query: (id) => ({
+        url: `/user/${id}`,
+        method: 'GET',
+      }),
+      providesTags: ['User'],
+    }),
     update: build.mutation<
       { access_token: string; refresh_token: string },
       updateUserDto

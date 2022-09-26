@@ -15,9 +15,9 @@ model User {
   createdAt DateTime @default(now())
   updateAt  DateTime @updatedAt
 
-  email    String   @unique
+  email    String    @unique
   password String
-  role     Role     @default(USER)
+  role     Role      @default(USER)
   name     String?
   surname  String?
   phone    String?
@@ -26,6 +26,7 @@ model User {
   sex      Sex?
   Rating   Rating[]
   Token    Token[]
+  Comment  Comment[]
 }
 
 model Basket {
@@ -67,6 +68,7 @@ model Device {
   typeId       Int
   DeviceInfo   DeviceInfo[]
   brandId      Int
+  Comment      Comment[]
 }
 
 model DeviceInfo {
@@ -112,6 +114,18 @@ model Brand {
   name        String        @unique
   BrandOnType BrandOnType[]
   Device      Device[]
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
+
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId   Int
+  device   Device @relation(fields: [deviceId], references: [id], onDelete: Cascade)
+  deviceId Int
+  comment  String
 }
 
 model BrandOnType {

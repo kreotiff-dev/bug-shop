@@ -25,7 +25,7 @@ export class TypeService {
         name: dto.name,
       },
     });
-    return {message:'Категория успешно создана'}
+    return { message: 'Категория успешно создана' };
   }
   async getAll(query: { page?: string; limit?: string }) {
     const page = parseInt(query.page) || 1;
@@ -77,7 +77,7 @@ export class TypeService {
         name: dto.name,
       },
     });
-    return {message:'Категория успешно обновлена'}
+    return { message: 'Категория успешно обновлена' };
   }
   async delete(dto: { id: number }) {
     const candidate = await this.prisma.type.findUnique({
@@ -89,11 +89,25 @@ export class TypeService {
       logger.error('Категория не найдена');
       throw new HttpException(`Категория не найдена`, HttpStatus.BAD_REQUEST);
     }
+    const devices = await this.prisma.device.findMany({
+      where: {
+        typeId: dto.id,
+      },
+    });
+    if (devices.length) {
+      logger.warn(
+        'Невозможно удалить категорию! Удалите сначала все устройства данной категории'
+      );
+      throw new HttpException(
+        'Невозможно удалить категорию! Удалите сначала все устройства данной категории',
+        HttpStatus.BAD_REQUEST
+      );
+    }
     await this.prisma.type.delete({
       where: {
         id: dto.id,
       },
     });
-    return {message: 'Категория успешно удалена'}
+    return { message: 'Категория успешно удалена' };
   }
 }

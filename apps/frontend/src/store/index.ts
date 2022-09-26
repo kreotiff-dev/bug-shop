@@ -1,3 +1,4 @@
+import { commentAPI } from './../service/comment';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { authAPI } from '../service/auth';
 import { brandAPI } from '../service/brand';
@@ -6,14 +7,13 @@ import { deviceAPI } from './../service/device';
 import { basketAPI } from './../service/basket';
 import { userAPI } from '../service/user';
 
-
-
 const rootReducer = combineReducers({
   [authAPI.reducerPath]: authAPI.reducer,
   [typeAPI.reducerPath]: typeAPI.reducer,
   [brandAPI.reducerPath]: brandAPI.reducer,
   [deviceAPI.reducerPath]: deviceAPI.reducer,
   [basketAPI.reducerPath]: basketAPI.reducer,
+  [commentAPI.reducerPath]: commentAPI.reducer,
   [userAPI.reducerPath]: userAPI.reducer,
 });
 
@@ -27,6 +27,7 @@ export const setupStore = () => {
         brandAPI.middleware,
         deviceAPI.middleware,
         basketAPI.middleware,
+        commentAPI.middleware,
         userAPI.middleware
       ),
   });

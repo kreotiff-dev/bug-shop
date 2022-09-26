@@ -25,7 +25,7 @@ export class BrandService {
         name: dto.name,
       },
     });
-    return {message:'Бренд успешно создан'}
+    return { message: 'Бренд успешно создан' };
   }
   async getAll(query: { page?: string; limit?: string }) {
     const page = parseInt(query.page) || 1;
@@ -89,7 +89,7 @@ export class BrandService {
         name: dto.name,
       },
     });
-    return {message:'Бренд успешно обновлен'}
+    return { message: 'Бренд успешно обновлен' };
   }
   async delete(dto: { id: number }) {
     const brand = await this.prisma.brand.findUnique({
@@ -104,11 +104,25 @@ export class BrandService {
         HttpStatus.BAD_REQUEST
       );
     }
+    const devices = await this.prisma.device.findMany({
+      where: {
+        brandId: dto.id,
+      },
+    });
+    if (devices.length) {
+      logger.warn(
+        'Невозможно удалить бренд! Удалите сначала все устройства данного бренда'
+      );
+      throw new HttpException(
+        'Невозможно удалить бренд! Удалите сначала все устройства данного бренда',
+        HttpStatus.BAD_REQUEST
+      );
+    }
     await this.prisma.brand.delete({
       where: {
         id: dto.id,
       },
     });
-    return {message:'Бренд успешно удален'}
+    return { message: 'Бренд успешно удален' };
   }
 }

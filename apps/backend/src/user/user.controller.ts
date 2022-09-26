@@ -8,6 +8,7 @@ import {
   Body,
   HttpCode,
   HttpStatus,
+  Param,
 } from '@nestjs/common';
 import { ApiHeaders, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { passwordDto, resetPassword, updateUserDto } from '@store/interface';
@@ -36,6 +37,17 @@ export class UserController {
   @Get('')
   getMe(@Headers('Authorization') token: string) {
     return this.service.getMe({ token });
+  }
+
+  @ApiOperation({
+    summary: 'Получить информацию об аккаунте по Id',
+    description: 'Позволяет получить информацию о данных аккаунта',
+  })
+  @ApiResponse({description:'Возвращает данные о пользователе', status: HttpStatus.OK})
+  @HttpCode(HttpStatus.OK)
+  @Get('/:id')
+  getById(@Param('id') id: string) {
+    return this.service.getById(parseInt(id));
   }
 
 

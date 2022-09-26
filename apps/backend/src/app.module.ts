@@ -9,6 +9,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { AuthModule } from './auth/auth.module';
 import { BasketModule } from './basket/basket.module';
+import { CommentModule } from './comment/comment.module';
 
 @Module({
   imports: [
@@ -19,12 +20,11 @@ import { BasketModule } from './basket/basket.module';
     DeviceModule,
     FileModule,
     ServeStaticModule.forRoot({
-      rootPath: join(
-        __dirname,'static'
-      ),
+      rootPath: join(__dirname, 'static'),
     }),
     AuthModule,
     BasketModule,
+    CommentModule,
   ],
 })
 export class AppModule {}

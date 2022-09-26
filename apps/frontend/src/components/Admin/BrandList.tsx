@@ -24,7 +24,12 @@ const BrandList: FC<BrandListProps> = ({ brands }) => {
     name: '',
   });
   const hundlerDelete = (id: number) => {
-    remove({ id });
+    remove({ id })
+      .unwrap()
+      .then(() => {
+        message.success('Бренд удален');
+      })
+      .catch((e) => message.error(e.data.message));
   };
   const hundlerUpdate = (brand: Brand) => {
     setIsModal(true);
@@ -32,23 +37,26 @@ const BrandList: FC<BrandListProps> = ({ brands }) => {
   };
 
   const handleOk = () => {
-    form.submit()
+    form.submit();
   };
 
   const handleCancel = () => {
     setIsModal(false);
     form.resetFields();
-    setUpdateBrand({id:0,name:''})
+    setUpdateBrand({ id: 0, name: '' });
   };
 
   const submit = () => {
-    update(updateBrand).unwrap().then(() => {
-      form.resetFields();
-      setUpdateBrand({id:0,name:''})
-      setIsModal(false);
-      message.success('Бренд добавлен')
-    }).catch(e=>message.error(e.data.message))
-  }
+    update(updateBrand)
+      .unwrap()
+      .then(() => {
+        form.resetFields();
+        setUpdateBrand({ id: 0, name: '' });
+        setIsModal(false);
+        message.success('Бренд добавлен');
+      })
+      .catch((e) => message.error(e.data.message));
+  };
 
   const dataTable: DataTable[] = [];
   brands.forEach((item) => {
@@ -75,36 +83,36 @@ const BrandList: FC<BrandListProps> = ({ brands }) => {
           >
             <a>Удалить</a>
           </Popconfirm>{' '}
-          /{' '}
-            <a onClick={() => hundlerUpdate(record)}>Редактировать</a>
+          / <a onClick={() => hundlerUpdate(record)}>Редактировать</a>
         </>
       ),
     },
   ];
   return (
     <>
-      <div className='brand__list'>
+      <div className="brand__list">
         <Table columns={columns} dataSource={dataTable} pagination={false} />
       </div>
-      {isModal && 
-      <Modal
-        title="Обновление"
-        visible={isModal}
-        onOk={handleOk}
-        onCancel={handleCancel}
-      >
-        <Form form={form} onFinish={submit}>
-          <Form.Item name='brand' rules={[rules.required()]} >
-            <Input
-              placeholder="Введите новое название бренда"
-              value={updateBrand.name}
-              onChange={(e) =>
-                setUpdateBrand({ ...updateBrand, name: e.target.value })
-              }
-            />
-          </Form.Item>
-        </Form>
-      </Modal>}
+      {isModal && (
+        <Modal
+          title="Обновление"
+          visible={isModal}
+          onOk={handleOk}
+          onCancel={handleCancel}
+        >
+          <Form form={form} onFinish={submit}>
+            <Form.Item name="brand" rules={[rules.required()]}>
+              <Input
+                placeholder="Введите новое название бренда"
+                value={updateBrand.name}
+                onChange={(e) =>
+                  setUpdateBrand({ ...updateBrand, name: e.target.value })
+                }
+              />
+            </Form.Item>
+          </Form>
+        </Modal>
+      )}
     </>
   );
 };

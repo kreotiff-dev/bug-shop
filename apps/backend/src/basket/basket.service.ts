@@ -11,13 +11,16 @@ export class BasketService {
   async addDevice(token: string, dto: { idDevice: number }) {
     const basket = await this.getBasketByToken(token);
     const candidate = await this.prisma.basketDevice.findFirst({
-      where:{
-        deviceId: dto.idDevice
-      }
-    })
-    if(candidate){
-      logger.error('Устройство уже добавлено в корзину')
-      throw new HttpException('Устройство уже добавлено в корзину', HttpStatus.BAD_REQUEST);
+      where: {
+        deviceId: dto.idDevice,
+      },
+    });
+    if (candidate) {
+      logger.error('Устройство уже добавлено в корзину');
+      throw new HttpException(
+        'Устройство уже добавлено в корзину',
+        HttpStatus.BAD_REQUEST
+      );
     }
     const device = await this.prisma.device.findUnique({
       where: { id: dto.idDevice },
@@ -34,7 +37,7 @@ export class BasketService {
         totalPrice: basket.totalPrice + device.price,
       },
     });
-    return {message:'Устройство успешно добавлено в корзину'};
+    return { message: 'Устройство успешно добавлено в корзину' };
   }
 
   async deleteDevice(token: string, dto: { idDevice: number }) {
@@ -59,7 +62,7 @@ export class BasketService {
         totalPrice: basket.totalPrice - device.price * basketDevice.count,
       },
     });
-    return {message:'Устройство успешно удалено из корзины'};
+    return { message: 'Устройство успешно удалено из корзины' };
   }
 
   async getBasketDevice(token: string) {
@@ -79,12 +82,12 @@ export class BasketService {
     dto: { idDevice: number; count: number }
   ) {
     const basket = await this.getBasketByToken(token);
-    if(dto.count === 0){
+    if (dto.count === 0) {
       return await this.prisma.basketDevice.delete({
-        where:{
-          id:dto.idDevice
-        }
-      })
+        where: {
+          id: dto.idDevice,
+        },
+      });
     }
     const basketDevice = await this.prisma.basketDevice.findFirst({
       where: {
@@ -114,7 +117,7 @@ export class BasketService {
       },
     });
 
-    return {message:'Кол-во успешно изменено'};
+    return { message: 'Кол-во успешно изменено' };
   }
 
   async isBasket(token: string, dto: { idDevice: number }) {
@@ -136,15 +139,15 @@ export class BasketService {
   async getBasketByToken(token: string) {
     const access_token = token.split(' ')[1];
     const user = this.jwt.decode(access_token);
-
     if (!user) {
       logger.error('Токен не валидный');
       throw new HttpException(`Токен не валидный`, HttpStatus.BAD_REQUEST);
     }
-    return this.prisma.basket.findUnique({
+    const basket = await this.prisma.basket.findUnique({
       where: {
         userId: user['sub'],
       },
     });
+    return basket;
   }
 }

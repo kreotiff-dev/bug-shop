@@ -10,7 +10,7 @@ import {
   HttpStatus,
   HttpCode,
 } from '@nestjs/common';
-import { ApiHeaders, ApiOperation, ApiProperty, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiHeaders, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { idDeviceDto, updateCountDto } from '@store/interface';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { BasketService } from './basket.service';

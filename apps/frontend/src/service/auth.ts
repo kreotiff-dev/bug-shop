@@ -1,3 +1,4 @@
+import { commentAPI } from './comment';
 import { createApi } from '@reduxjs/toolkit/dist/query/react';
 import { basketAPI } from './basket';
 import { baseQueryWithReauth } from './initial';
@@ -7,7 +8,7 @@ export const authAPI = createApi({
   reducerPath: 'authAPI',
   baseQuery: baseQueryWithReauth,
   tagTypes: ['Basket'],
-  
+
   endpoints: (build) => ({
     login: build.mutation<
       { access_token: string; refresh_token: string },
@@ -24,10 +25,11 @@ export const authAPI = createApi({
           localStorage.setItem('access_token', data.access_token);
           dispatch(basketAPI.util.invalidateTags(['Basket']));
           dispatch(userAPI.util.invalidateTags(['User']));
+          dispatch(commentAPI.util.invalidateTags(['Comment']));
         } catch (error) {
           console.log(error);
         }
-      }
+      },
     }),
     registration: build.mutation<
       { access_token: string; refresh_token: string },
@@ -38,12 +40,13 @@ export const authAPI = createApi({
         method: 'POST',
         body: args,
       }),
-      async onQueryStarted(_, { queryFulfilled,dispatch }) {
+      async onQueryStarted(_, { queryFulfilled, dispatch }) {
         try {
           const data = (await queryFulfilled).data;
           localStorage.setItem('access_token', data.access_token);
           dispatch(basketAPI.util.invalidateTags(['Basket']));
           dispatch(userAPI.util.invalidateTags(['User']));
+          dispatch(commentAPI.util.invalidateTags(['Comment']));
         } catch (error) {
           console.log(error);
         }
@@ -51,16 +54,22 @@ export const authAPI = createApi({
     }),
     test: build.mutation<'heads' | 'tails', void>({
       queryFn(arg, queryApi, extraOptions, baseQuery) {
-        const randomVal = Math.random()
-        console.log('test work')
+        const randomVal = Math.random();
+        console.log('test work');
         if (randomVal < 0.45) {
-          return { data: 'heads' }
+          return { data: 'heads' };
         }
         if (randomVal < 0.9) {
-          return { data: 'tails' }
+          return { data: 'tails' };
         }
-        return { error: { status: 500, statusText: 'Internal Server Error', data: "Coin landed on it's edge!" } }
-      }
+        return {
+          error: {
+            status: 500,
+            statusText: 'Internal Server Error',
+            data: "Coin landed on it's edge!",
+          },
+        };
+      },
     }),
     logout: build.mutation<void, void>({
       query: (_) => ({

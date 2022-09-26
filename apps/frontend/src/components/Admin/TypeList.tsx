@@ -25,7 +25,12 @@ const TypeList: FC<TypeListProps> = ({ types }) => {
     name: '',
   });
   const hundlerDelete = (id: number) => {
-    remove({ id });
+    remove({ id })
+      .unwrap()
+      .then(() => {
+        message.success('Категория удалена');
+      })
+      .catch((e) => message.error(e.data.message));
   };
   const hundlerUpdate = (type: Type) => {
     setIsModal(true);
@@ -41,14 +46,16 @@ const TypeList: FC<TypeListProps> = ({ types }) => {
     form.resetFields();
   };
   const submit = () => {
-    
-    update(updateType).unwrap().then(()=>{
-      setIsModal(false);
-      message.success('Данные обновлены')
-      setIsModal(false);
-      form.resetFields();
-    }).catch(e => message.error(e.data.message))
-  }
+    update(updateType)
+      .unwrap()
+      .then(() => {
+        setIsModal(false);
+        message.success('Данные обновлены');
+        setIsModal(false);
+        form.resetFields();
+      })
+      .catch((e) => message.error(e.data.message));
+  };
   const dataTable: DataTable[] = [];
   types.forEach((item) => {
     dataTable.push({
@@ -74,15 +81,14 @@ const TypeList: FC<TypeListProps> = ({ types }) => {
           >
             <a>Удалить</a>
           </Popconfirm>{' '}
-          /{' '}
-            <a onClick={() => hundlerUpdate(record)}>Редактировать</a>
+          / <a onClick={() => hundlerUpdate(record)}>Редактировать</a>
         </>
       ),
     },
   ];
   return (
     <>
-      <div className='type__list'>
+      <div className="type__list">
         <Table columns={columns} dataSource={dataTable} pagination={false} />
       </div>
       <Modal
@@ -92,10 +98,7 @@ const TypeList: FC<TypeListProps> = ({ types }) => {
         onCancel={handleCancel}
       >
         <Form form={form} onFinish={submit}>
-          <Form.Item
-            name='name'
-            rules={[rules.required()]}
-          >
+          <Form.Item name="name" rules={[rules.required()]}>
             <Input
               placeholder="Введите новое название категории"
               value={updateType.name}

@@ -35,19 +35,19 @@ export class UserService {
         HttpStatus.BAD_REQUEST
       );
     }
-    let role: Role = Role.USER;
-    const admin = await this.prisma.user.findMany({
-      where: {
-        role: Role.ADMIN,
-      },
-    });
-    if (!admin.length) {
-      role = Role.ADMIN;
-    }
+    // let role: Role = Role.USER;
+    // const admin = await this.prisma.user.findMany({
+    //   where: {
+    //     role: Role.ADMIN,
+    //   },
+    // });
+    // if (!admin.length) {
+    //   role = Role.ADMIN;
+    // }
     const user = await this.prisma.user.create({
       data: {
         ...dto,
-        role: role,
+        role: Role.USER,
       },
     });
     await this.prisma.basket.create({
@@ -71,6 +71,19 @@ export class UserService {
       },
     });
     delete user.password;
+    return user;
+  }
+
+  async getById(id: number) {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        id,
+      },
+    });
+    if (!user) {
+      logger.error('Пользователь не найден');
+      throw new HttpException(`Пользователь не найден`, HttpStatus.BAD_REQUEST);
+    }
     return user;
   }
 
@@ -118,7 +131,7 @@ export class UserService {
         id: user.id,
       },
     });
-    return {message: 'Пользователь удален'}
+    return { message: 'Пользователь удален' };
   }
 
   async update(token: string, dto: updateUserDto) {
@@ -182,7 +195,7 @@ export class UserService {
         password: hash,
       },
     });
-    return {message:'Пароль изменен'}
+    return { message: 'Пароль изменен' };
   }
 
   async decode(token: string) {
