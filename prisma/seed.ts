@@ -57,7 +57,7 @@ async function main() {
 }
 
 main()
-  .catch(() => console.log('Загрузка завершена успешно.'))
+  .then(() => console.log('Загрузка завершена успешно.'))
   .catch((e) => {
     console.error(e);
     process.exit(1);

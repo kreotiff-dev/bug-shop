@@ -1,7 +1,11 @@
 # Store
 
+При первом запуске проекта в Docker:
+Логин администратора: admin@admin.com
+Пароль администратора: adminadmin
 
 Для запуска Docker
+
 - Открыть консоль и прописать команду
   - `git clone https://github.com/pr9n1k/store.git`
 - Переходим в папку с проектом
@@ -13,6 +17,7 @@
   - `http://localhost:3000/api`
 
 Для запуска локально
+
 - Открыть консоль и прописать команду
   - `git clone https://github.com/pr9n1k/store.git`
 - Переходим в папку с проектом

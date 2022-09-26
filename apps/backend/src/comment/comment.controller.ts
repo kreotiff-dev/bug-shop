@@ -11,11 +11,18 @@ import {
   Delete,
   Patch,
 } from '@nestjs/common';
-import { ApiHeaders, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiHeaders,
+  ApiOperation,
+  ApiParam,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { commentDto, updateCommentDto } from '@store/interface';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CommentService } from './comment.service';
 
+@ApiTags('Отзывы')
 @Controller('comment')
 export class CommentController {
   constructor(private service: CommentService) {}
@@ -52,11 +59,15 @@ export class CommentController {
   @ApiOperation({
     summary: 'Получить все комментарии определенного устройства',
     description:
-      'Позволяет пользователю получить посмотреть все комментарии выбранного устройства',
+      'Позволяет пользователю получить все комментарии выбранного устройства',
   })
   @ApiResponse({
     description: 'Возвращает массив комментариев устройства',
     status: HttpStatus.OK,
+  })
+  @ApiParam({
+    name: 'id',
+    description: 'id устройства',
   })
   @HttpCode(HttpStatus.OK)
   @Get('/device/:id')
@@ -64,23 +75,27 @@ export class CommentController {
     return this.service.getCommentsDevice(parseInt(id));
   }
   //Получить комментарий комментарий пользователя по id
-  @ApiOperation({
-    summary: 'Получить все комментарии определенного устройства',
-    description:
-      'Позволяет пользователю получить посмотреть все комментарии выбранного устройства',
-  })
-  @ApiResponse({
-    description: 'Возвращает массив комментариев устройства',
-    status: HttpStatus.OK,
-  })
-  @HttpCode(HttpStatus.OK)
-  @Get('/:id')
-  getCommentById(
-    @Param('id') id: string,
-    @Headers('Authorization') token: string
-  ) {
-    return this.service.getCommentById(parseInt(id), token);
-  }
+  // @ApiOperation({
+  //   summary: 'Получить комментарий по id пользователя',
+  //   description:
+  //     'Позволяет получить коментарий пользователя '
+  // })
+  // @ApiResponse({
+  //   description: 'Возвращает массив комментариев устройства',
+  //   status: HttpStatus.OK,
+  // })
+  // @HttpCode(HttpStatus.OK)
+  // @ApiParam({
+  //   name: 'id',
+  //   description: 'id устройства',
+  // })
+  // @Get('/:id')
+  // getCommentById(
+  //   @Param('id') id: string,
+  //   @Headers('Authorization') token: string
+  // ) {
+  //   return this.service.getCommentById(parseInt(id), token);
+  // }
   //Обновить комментарий
   @ApiOperation({
     summary: 'Изменить комментарий',
@@ -103,6 +118,10 @@ export class CommentController {
   ])
   @HttpCode(HttpStatus.OK)
   @UseGuards(JwtAuthGuard)
+  @ApiParam({
+    name: 'id',
+    description: 'id отзыва',
+  })
   @Patch('/:id')
   update(
     @Body() dto: updateCommentDto,
@@ -133,6 +152,10 @@ export class CommentController {
   ])
   @HttpCode(HttpStatus.OK)
   @UseGuards(JwtAuthGuard)
+  @ApiParam({
+    name: 'id',
+    description: 'id отзыва',
+  })
   @Delete('/:id')
   delete(@Param('id') id: string, @Headers('Authorization') token: string) {
     return this.service.delete(parseInt(id), token);

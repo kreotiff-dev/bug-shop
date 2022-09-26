@@ -53,23 +53,23 @@ export class CommentService {
     });
   }
 
-  async getCommentById(id: number, token: string) {
-    const access_token = token.split(' ')[1];
-    const user = this.jwt.decode(access_token);
-    // if (user['role'] === Role.ADMIN) {
-    //   return this.prisma.comment.findUnique({
-    //     where: {
-    //       id: id,
-    //     },
-    //   });
-    // }
-    return this.prisma.comment.findFirst({
-      where: {
-        id: id,
-        userId: user['sub'],
-      },
-    });
-  }
+  // async getCommentById(id: number, token: string) {
+  //   const access_token = token.split(' ')[1];
+  //   const user = this.jwt.decode(access_token);
+  //   // if (user['role'] === Role.ADMIN) {
+  //   //   return this.prisma.comment.findUnique({
+  //   //     where: {
+  //   //       id: id,
+  //   //     },
+  //   //   });
+  //   // }
+  //   return this.prisma.comment.findFirst({
+  //     where: {
+  //       id: id,
+  //       userId: user['sub'],
+  //     },
+  //   });
+  // }
   async update(dto: updateCommentDto, token: string, id: number) {
     const access_token = token.split(' ')[1];
     const user = this.jwt.decode(access_token);
