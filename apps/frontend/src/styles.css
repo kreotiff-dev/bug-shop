@@ -244,17 +244,21 @@ img {
 }
 .shop__sidebar-filter {
   margin-right: 20px;
+  min-width: 120px;
 }
 
 .shop__item-img {
   width: 200px;
   height: 200px;
-  overflow: hidden;
-  text-align: center;
   margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .shop__item-img img {
-  height: 100%;
+  height: unset;
+  max-width: 100%;
+  max-height: 100%;
 }
 
 .shop__body {
@@ -289,20 +293,20 @@ img {
 }
 
 .brand,
-.type{
+.type {
   display: flex;
   flex-direction: column;
 }
 .brand__list,
-.type__list{
+.type__list {
   height: 495px;
 }
 .brand__pagination,
-.type__pagination{
-  margin: 20px auto 0; 
+.type__pagination {
+  margin: 20px auto 0;
 }
 .brand__btn button,
-.type__btn button{
+.type__btn button {
   margin-bottom: 10%;
   width: 100%;
 }

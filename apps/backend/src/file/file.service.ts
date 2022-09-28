@@ -3,11 +3,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 import * as uuid from 'uuid';
 
-const logger = new Logger();
-
-const filePath = path.resolve(
-  __dirname,'static'
-);
+const filePath = path.resolve(__dirname, 'static');
 @Injectable()
 export class FileService {
   async createFile(file): Promise<string> {
@@ -17,9 +13,8 @@ export class FileService {
       }
       const fileExtension = file.originalname.split('.').pop();
       const fileName = uuid.v4() + '.' + fileExtension;
-
       const fullPath = path.join(filePath, fileName);
-      await fs.promises.mkdir(filePath, { recursive: true })
+      await fs.promises.mkdir(filePath, { recursive: true });
       fs.writeFile(
         fullPath,
         Buffer.from(file.buffer),
@@ -28,7 +23,7 @@ export class FileService {
           if (e) {
             throw e;
           }
-        },
+        }
       );
       return fileName;
     } catch (e) {
@@ -37,12 +32,12 @@ export class FileService {
   }
 
   removeFile(fileName: string) {
-    try{
-      if(!fileName) return '';
-      fs.unlink(path.join(filePath,fileName), err => {
-        if(err) throw err;
-      })
-    }catch(e){
+    try {
+      if (!fileName) return '';
+      fs.unlink(path.join(filePath, fileName), (err) => {
+        if (err) throw err;
+      });
+    } catch (e) {
       throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }

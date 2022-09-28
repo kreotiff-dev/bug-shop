@@ -7,7 +7,6 @@ WORKDIR /app
 COPY package*.json ./
 COPY package-lock.json package-lock.json
 COPY prisma ./prisma/
-COPY static ./static/
 
 # Install app dependencies
 RUN npm install
@@ -15,6 +14,7 @@ RUN npm install
 COPY . .
 RUN npx prisma generate
 RUN npm run build
+COPY static ./dist/apps/backend/static
 
 FROM node:17.3.0
 ENV NODE_ENV production
@@ -23,7 +23,6 @@ COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/prisma ./prisma
-COPY --from=builder /app/static ./static
 ENV PORT=3000
 
 EXPOSE ${PORT}

@@ -1,8 +1,9 @@
 # Store
 
 При первом запуске проекта в Docker:
-Логин администратора: admin@admin.com
-Пароль администратора: adminadmin
+
+- Логин администратора: `admin@admin.com`
+- Пароль администратора: `adminadmin`
 
 Для запуска Docker
 
