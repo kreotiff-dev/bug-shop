@@ -1,6 +1,5 @@
 import { Device } from '@prisma/client';
 import { Card, List } from 'antd';
-import Meta from 'antd/lib/card/Meta';
 import React, { FC } from 'react';
 import DeviceItem from './DeviceItem';
 

@@ -1,4 +1,4 @@
-import { Button, Pagination } from 'antd';
+import { Pagination } from 'antd';
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import DeviceList from '../components/DeviceList';

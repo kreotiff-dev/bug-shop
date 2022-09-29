@@ -1,5 +1,4 @@
-import { Type } from '@nestjs/common';
-import { Brand, Sex } from '@prisma/client';
+import { Sex } from '@prisma/client';
 
 export const formateDate = (dateNumber: number | Date): string => {
   let date: Date;

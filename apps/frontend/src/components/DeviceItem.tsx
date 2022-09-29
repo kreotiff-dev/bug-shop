@@ -1,5 +1,5 @@
 import { Device } from '@prisma/client';
-import { Button, Card, List, message, Divider } from 'antd';
+import { Button, Card, List, message } from 'antd';
 import React, { FC } from 'react';
 import { brandAPI } from '../service/brand';
 import { useNavigate, useLocation } from 'react-router-dom';

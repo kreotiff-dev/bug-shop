@@ -1,10 +1,7 @@
 import { Device } from '@prisma/client';
+import { Table } from 'antd';
 import React from 'react';
-import { render } from '@testing-library/react';
-import { message, Popconfirm, Table } from 'antd';
 import { brandAPI } from '../../service/brand';
-import { deviceAPI } from '../../service/device';
-import DeviceModal from '../Modal/Device';
 import DeviceItem from './DeviceItem';
 
 type DeviceTableProps = {

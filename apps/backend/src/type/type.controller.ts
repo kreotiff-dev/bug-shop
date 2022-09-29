@@ -1,4 +1,3 @@
-import { nameDto } from './../../../../libs/interface/src/lib/dto/name.dto';
 import {
   Body,
   Controller,
@@ -14,7 +13,7 @@ import {
 } from '@nestjs/common';
 import { TypeService } from './type.service';
 import { ApiTags, ApiOperation, ApiResponse, ApiHeaders, ApiQuery } from '@nestjs/swagger';
-import { createTypeDto } from '@store/interface';
+import { createTypeDto, nameDto } from '@store/interface';
 import { Roles } from '../auth/roles-auth.decorator';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';

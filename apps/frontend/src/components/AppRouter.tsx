@@ -10,13 +10,11 @@ import AdminDevice from './Admin/Device';
 import AdminBrand from './Admin/Brand';
 import Device from '../pages/Device';
 import Basket from './../pages/Basket';
-import Require from '../hoc/RequireAdmin';
 import Profile from '../pages/Profile';
 
 const AppRouter = () => {
   return (
     <Routes>
-      {/* <Route element={<Require />}> */}
       <Route path={LOGIN_ROUTE} element={<Login />} />
       <Route path={REGISTRATION_ROUTE} element={<Login />} />
       <Route path={'/shop'} element={<Shop />} />
@@ -29,7 +27,6 @@ const AppRouter = () => {
         <Route path="brand" element={<AdminBrand />} />
       </Route>
       <Route path="/profile" element={<Profile />} />
-      {/* </Route> */}
       <Route path="*" element={<Navigate to={'/shop'} />} />
     </Routes>
   );

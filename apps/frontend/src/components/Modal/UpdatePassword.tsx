@@ -1,4 +1,4 @@
-import { Form, Input, Modal, message, Divider } from 'antd';
+import { Form, Input, Modal, message } from 'antd';
 import React from 'react';
 import { rules } from '../../utils/rules';
 import { userAPI } from './../../service/user';

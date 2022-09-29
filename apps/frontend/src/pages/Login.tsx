@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { LoginForm } from '../components/loginForm';
-import { Col, Row } from 'antd';
 import { Navigate, useLocation } from 'react-router-dom';
 import Layout from '../components/Layout';
 import { LOGIN_ROUTE } from '../utils/const';

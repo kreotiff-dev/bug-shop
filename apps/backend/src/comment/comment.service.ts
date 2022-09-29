@@ -1,6 +1,5 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { Role } from '@prisma/client';
 import { commentDto, updateCommentDto } from '@store/interface';
 import { PrismaService } from 'nestjs-prisma';
 

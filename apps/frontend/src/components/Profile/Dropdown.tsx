@@ -1,7 +1,7 @@
 import { Role } from '@prisma/client';
-import { Button, Dropdown, Menu } from 'antd';
+import { Dropdown, Menu } from 'antd';
 import { ItemType } from 'antd/lib/menu/hooks/useItems';
-import React, { Children, useContext, useRef } from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../context';
 import { authAPI } from '../../service/auth';

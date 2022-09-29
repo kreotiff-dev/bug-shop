@@ -1,6 +1,5 @@
 import { Button, Pagination } from 'antd';
 import React from 'react';
-import DeviceList from '../DeviceList';
 import CreateDevice from '../Modal/Device';
 import { deviceAPI } from './../../service/device';
 import DeviceTable from './DeviceTable';

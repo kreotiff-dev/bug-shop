@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Button, Col, Form, Input, message, Modal, Pagination, Row } from 'antd';
 import BrandList from './BrandList';
 import { brandAPI } from '../../service/brand';
-import { Brand } from '@prisma/client';
 import { rules } from '../../utils/rules';
 
 const AdminBrand = () => {

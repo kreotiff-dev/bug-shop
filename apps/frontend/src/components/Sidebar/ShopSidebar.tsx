@@ -2,8 +2,7 @@ import React from 'react';
 import { Button, Select } from 'antd';
 import { brandAPI } from './../../service/brand';
 import { typeAPI } from './../../service/type';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { parseSearch } from '../../utils/parseData';
+import { useNavigate } from 'react-router-dom';
 import { formatSearch } from './../../utils/formatData';
 
 type ShopSidebarPops = {

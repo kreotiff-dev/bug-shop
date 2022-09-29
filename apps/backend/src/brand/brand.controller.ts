@@ -12,7 +12,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { BrandService } from './brand.service';
-import { ApiTags, ApiOperation, ApiResponse, ApiQuery, ApiParam, ApiHeaders } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiHeaders } from '@nestjs/swagger';
 import { createBrandDto, nameDto } from '@store/interface';
 import { Roles } from '../auth/roles-auth.decorator';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';

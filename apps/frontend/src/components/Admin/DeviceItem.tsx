@@ -3,7 +3,6 @@ import { message, Popconfirm } from 'antd';
 import React from 'react';
 import { deviceAPI } from '../../service/device';
 import DeviceModal from '../Modal/Device';
-import { typeAPI } from './../../service/type';
 
 type DeviceItemProps = {
   device: Device;

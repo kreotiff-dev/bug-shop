@@ -1,6 +1,5 @@
 import { Sex, User } from '@prisma/client';
-import { Form, Input, Modal, Radio, Switch, message } from 'antd';
-import { Rule } from 'antd/lib/form';
+import { Form, Input, Modal, Radio, message } from 'antd';
 import React from 'react';
 import { rules } from './../../utils/rules';
 import { parseStringToDate } from '../../utils/parseData';

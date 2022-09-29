@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsInt, IsNotEmpty, IsString, Min } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 export class CreateDeviceDto {
   @IsNotEmpty()
   @IsString()

@@ -22,12 +22,6 @@ export const commentAPI = createApi({
       }),
       providesTags: ['Comments'],
     }),
-    // getCommentById: build.query<Comment, number>({
-    //   query: (id) => ({
-    //     url: `/comment/${id}`,
-    //   }),
-    //   providesTags: ['Comment'],
-    // }),
     update: build.mutation<void, { id: number } & updateCommentDto>({
       query: (args) => ({
         url: `/comment/${args.id}`,

@@ -35,15 +35,6 @@ export class UserService {
         HttpStatus.BAD_REQUEST
       );
     }
-    // let role: Role = Role.USER;
-    // const admin = await this.prisma.user.findMany({
-    //   where: {
-    //     role: Role.ADMIN,
-    //   },
-    // });
-    // if (!admin.length) {
-    //   role = Role.ADMIN;
-    // }
     const user = await this.prisma.user.create({
       data: {
         ...dto,
