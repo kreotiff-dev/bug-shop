@@ -45,6 +45,7 @@ const CommentItem: React.FC<CommentItemProps> = ({ comment }) => {
   const update = isComment ? (
     <span onClick={onClickUpdate}>Редактировать</span>
   ) : undefined;
+
   return (
     <>
       <Comment
