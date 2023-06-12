@@ -1,7 +1,7 @@
 # Store
 
 - Открыть консоль и прописать команду
-  - `git clone https://github.com/pr9n1k/store.git`
+  - `git clone https://github.com/kreotiff-dev/bug-shop.git`
 - Переходим в папку с проектом
   - `cd store`
 - Запустить Docker
