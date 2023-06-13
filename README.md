@@ -69,4 +69,15 @@ Node
 apt install curl
 curl -fsSL https://deb.nodesource.com/setup_17.x | sudo -E bash -
 apt install -y nodejs
+npm i
+npx prisma generate
+npm run build
+npm run build:frontend
+```
+
+Start backend
+-------------
+
+```bash
+npm run start:migrate:prod
 ```

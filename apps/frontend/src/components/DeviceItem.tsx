@@ -18,7 +18,7 @@ const DeviceItem: FC<DeviceItemProps> = ({ device }) => {
   const [isModal, setIsModal] = React.useState<boolean>(false);
   const { data: brand } = brandAPI.useGetByIdQuery(device.brandId);
   const { data: info } = deviceAPI.useGetInfoQuery(device.id);
-  const pictureUrl = `${window.location.protocol}//${window.location.hostname}:3000/` + device.img;
+  const pictureUrl = `http://${window.location.hostname}:3000/` + device.img;
   const onUpdate = () => {
     setIsModal(true);
   };
