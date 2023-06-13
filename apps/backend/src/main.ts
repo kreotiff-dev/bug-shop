@@ -15,7 +15,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   app.enableCors({
     credentials: true,
-    origin: ['http://localhost:4200'],
+    origin: [process.env['CLIENT_URL']],
   });
 
   const config = new DocumentBuilder()

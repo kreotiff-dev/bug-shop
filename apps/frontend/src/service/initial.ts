@@ -2,7 +2,7 @@ import { authAPI } from './auth';
 import { BaseQueryFn, FetchArgs, fetchBaseQuery, FetchBaseQueryError } from '@reduxjs/toolkit/dist/query';
 
 export const baseQuery = fetchBaseQuery({
-    baseUrl: 'http://localhost:3000',
+    baseUrl: `${window.location.protocol}//${window.location.hostname}:3000`,
     prepareHeaders: (headers) => {
       const token = localStorage.getItem('access_token');
       if (token) {
@@ -12,21 +12,21 @@ export const baseQuery = fetchBaseQuery({
     },
     credentials: 'include'
   });
-  
+
   export const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async (
     args,
     api,
     extraOptions
   ) => {
     let result = await baseQuery(args, api, extraOptions);
-    
+
     if (result.error && result.error.status === 401 && localStorage.getItem('access_token')) {
       localStorage.removeItem('access_token')
         const refreshResult = await baseQuery({
           url: 'auth/refresh/',
           method: 'POST',
         }, api, extraOptions);
-  
+
         if (refreshResult.data) {
             const stringRes = JSON.stringify(refreshResult.data);
             const access_token:string = JSON.parse(stringRes).access_token;
