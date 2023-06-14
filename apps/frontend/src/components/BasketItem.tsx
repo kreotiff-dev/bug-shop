@@ -40,7 +40,7 @@ const BasketItem: React.FC<BasketItemProps> = ({
   return (
     <div className="basket__item">
       <div className="basket__item-img" style={{ height: '100px' }}>
-        <img src={`http://${window.location.hostname}:3000/${data?.device?.img}`} alt="img" />
+        <img src={`${window.location.protocol}://${window.location.hostname}/${data?.device?.img}`} alt="img" />
       </div>
       <Link to={`/shop/${data?.device?.id}`} className="basket__item-title">
         {data?.brand.name} {data?.device?.name}

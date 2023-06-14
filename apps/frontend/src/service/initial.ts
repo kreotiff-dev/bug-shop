@@ -2,7 +2,7 @@ import { authAPI } from './auth';
 import { BaseQueryFn, FetchArgs, fetchBaseQuery, FetchBaseQueryError } from '@reduxjs/toolkit/dist/query';
 
 export const baseQuery = fetchBaseQuery({
-    baseUrl: `http://${window.location.hostname}:3000`,
+    baseUrl: `${window.location.protocol}://${window.location.hostname}/api`,
     prepareHeaders: (headers) => {
       const token = localStorage.getItem('access_token');
       if (token) {

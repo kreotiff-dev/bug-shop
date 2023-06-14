@@ -44,7 +44,7 @@ const DeviceTable: React.FC<DeviceTableProps> = ({ devices }) => {
       render: (device: Device) => (
         <div>
           <img
-            src={`http://${window.location.hostname}:3000/${device.img}`}
+            src={`${window.location.protocol}://${window.location.hostname}/${device.img}`}
             alt="img"
             style={{ width: '40px', height: '40px' }}
           />

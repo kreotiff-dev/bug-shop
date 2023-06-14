@@ -88,7 +88,7 @@ const Device = () => {
         <Col span={8} offset={4} style={{ height: '200px' }}>
           <img
             style={{ height: '100%' }}
-            src={`http://${window.location.hostname}:3000/${data?.device.img}`}
+            src={`${window.location.protocol}://${window.location.hostname}/${data?.device.img}`}
             alt=""
           />
         </Col>

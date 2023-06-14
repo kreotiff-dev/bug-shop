@@ -41,7 +41,7 @@ Database
 apt update
 apt install -y postgresql postgresql-contrib
 sudo -u postgres createuser --interactive
-Enter name of role to add: bug-shop
+> Enter name of role to add: bug-shop
 > Shall the new role be a superuser? (y/n) n
 > Shall the new role be allowed to create databases? (y/n) y
 > Shall the new role be allowed to create more new roles? (y/n) n
@@ -81,3 +81,4 @@ Start backend
 ```bash
 npm run start:migrate:prod
 ```
+OZITI.RU
