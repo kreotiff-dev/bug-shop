@@ -45,14 +45,14 @@ services:
     depends_on:
       - store-db
     ports:
-      - "5555:80"
+      - "5555:5555"
     environment:
       PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
       PGADMIN_DEFAULT_PASSWORD: admin
     volumes:
       - pgadmin:/var/lib/pgadmin
     restart: always
-      
+
 volumes:
   store-db:
     name: store-db
