@@ -81,4 +81,3 @@ Start backend
 ```bash
 npm run start:migrate:prod
 ```
-OZITI.RU
