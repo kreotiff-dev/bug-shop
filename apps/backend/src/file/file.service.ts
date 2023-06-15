@@ -27,7 +27,7 @@ export class FileService {
       );
       return fileName;
     } catch (e) {
-      throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new HttpException(e.message + " " + filePath, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
