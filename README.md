@@ -62,7 +62,9 @@ apt install -y nginx
 ln -s /var/www/www-root/data/www/bug-shop.ru/store/apps/frontend/bug-shop.conf /etc/nginx/vhosts-resources/bug-shop.ru/
 ```
 
-Отредактировать nginx.conf, добавив в него содержимое apps/frontend/nginx-hosting.conf
+или
+---
+Отредактировать /etc/nginx/nginx.conf, добавив в него содержимое apps/frontend/nginx-hosting.conf
 ```nginx
 location  ~ ^/api/(.*)$ {
   proxy_pass   http://127.0.0.1:3000/$1$is_args$args;
