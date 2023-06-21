@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+mkdir ../branches >> /dev/null
 for BRANCH in $(ls -1d $PWD/../branches/*) ;
 do
   NAME=$(basename $BRANCH)
