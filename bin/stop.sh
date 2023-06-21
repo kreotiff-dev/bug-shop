@@ -7,5 +7,4 @@ do
   rm server.socket
   pm2 stop $NAME
   echo Kill $NAME
-
 done
