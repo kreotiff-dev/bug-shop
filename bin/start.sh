@@ -11,5 +11,4 @@ do
   mkdir ~/.forever/logs -p
   pm2 start dist/apps/backend/main.js --name $NAME
   echo "***** RUNNING $NAME ******"
-
 done
