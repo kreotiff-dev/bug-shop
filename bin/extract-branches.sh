@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+cd ../
 rm ../branches -r > /dev/null
 mkdir ../branches
 for BRANCH in $(git branch | awk '{if(NR>0)print}' | cut -c 3-) ;
