@@ -8,6 +8,9 @@ do
     echo Extract $BRANCH
     git checkout $BRANCH &&
     mkdir $FOLDER &&
-    rsync -r --exclude '.git' ./ $FOLDER
+    rsync -r \
+        --exclude '.git' \
+        --exclude 'node_modules' \
+        ./ $FOLDER
 done
 git checkout main
