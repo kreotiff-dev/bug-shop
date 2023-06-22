@@ -16,5 +16,6 @@ do
         --exclude '.git' \
         --exclude 'node_modules' \
         ./ $FOLDER
+    sed -i "s/{branch}/$BRANCH/g" $FOLDER/apps/frontend/src/index.html
 done
 git checkout main
