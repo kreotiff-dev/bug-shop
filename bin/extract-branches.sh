@@ -8,7 +8,7 @@ do
     FOLDER="../branches/$(cut -d'/' -f3 <<<"$BRANCH")"
     echo Extract $BRANCH
     git checkout $BRANCH &&
-    mkdir $FOLDER &&
+    mkdir $FOLDER -p &&
     rsync -r \
         --exclude '.git' \
         --exclude 'node_modules' \
