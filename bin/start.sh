@@ -12,7 +12,7 @@ do
   npm i
   nx build frontend --prod
   nx build
-  cp $BRANCH/static $BRANCH/dist/apps/backend/api
+  cp $BRANCH/static $BRANCH/dist/apps/frontend/api
   pm2 start $BRANCH/dist/apps/backend/main.js --name $NAME
   echo "*** RUNNING $NAME ***"
   echo "*** Path $BRANCH"
