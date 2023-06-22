@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # rm ../branches -r > /dev/null
-mkdir ../branches >> /dev/null
+mkdir ../branches -p >> /dev/null
 git fetch --all
 for BRANCH in $(git branch | awk '{if(NR>0)print}' | cut -c 3-) ;
 do
