@@ -22,6 +22,6 @@ do
         --exclude 'node_modules' \
         ./ $FOLDER
     sed -i "s/{branch}/$BRANCH/g" $FOLDER/apps/frontend/src/index.html
-    cp $CURRENT_DIR/.env $FOLDER/
+    cp ../$CURRENT_DIR/.env $FOLDER/
 done
 git checkout main
