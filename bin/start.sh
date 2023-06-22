@@ -8,8 +8,7 @@ do
   npm i
   nx build frontend --prod
   nx build
-  mkdir ~/.forever/logs -p
-  pm2 start dist/apps/backend/main.js --name $NAME
+  pm2 start $BRANCH/dist/apps/backend/main.js --name $NAME
   echo "***** RUNNING $NAME ******"
 
 done
