@@ -27,7 +27,7 @@ do
   SOCKET="$PWD/server.socket"
   file_to_wait=$SOCKET
   echo "Waiting for $SOCKET"
-  while [ ! -f "$SOCKET" ]
+  while [ ! -S "$SOCKET" ]
   do
     sleep 1
   done
