@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
 mkdir ../branches -p
+
+CURRENT_DIR=$ENV
+
 for BRANCH in $(ls -1d $PWD/../branches/*) ;
 do
   NAME=$(basename $BRANCH)
@@ -15,3 +18,11 @@ do
   echo "*** Path $BRANCH"
 
 done
+
+cd $CURRENT_DIR
+sleep 5
+for BRANCH in $(ls -1d $PWD/../branches/*) ;
+  cd $BRANCH
+  chmod 777 server.socket
+do
+dome

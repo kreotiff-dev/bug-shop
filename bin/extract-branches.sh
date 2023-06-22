@@ -1,12 +1,16 @@
 #!/usr/bin/env bash
 
+CURRENT_DIR=$ENV
+
 # rm ../branches -r > /dev/null
 mkdir ../branches -p >> /dev/null
 git pull
 for branch in `git branch -a | grep remotes | grep -v HEAD | grep -v master `; do
    git branch --track ${branch#remotes/origin/} $branch
 done
+
 git fetch --all
+
 for BRANCH in $(git branch | awk '{if(NR>0)print}' | cut -c 3-) ;
 do
     FOLDER="../branches/$(cut -d'/' -f3 <<<"$BRANCH")"
@@ -18,5 +22,6 @@ do
         --exclude 'node_modules' \
         ./ $FOLDER
     sed -i "s/{branch}/$BRANCH/g" $FOLDER/apps/frontend/src/index.html
+    cp $CURRENT_DIR/.env $FOLDER/
 done
 git checkout main
