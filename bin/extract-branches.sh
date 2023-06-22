@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-CURRENT_DIR=$ENV
+CURRENT_DIR=$(pwd)
 
 # rm ../branches -r > /dev/null
 mkdir ../branches -p >> /dev/null

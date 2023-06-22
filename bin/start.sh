@@ -2,7 +2,7 @@
 
 mkdir ../branches -p
 
-CURRENT_DIR=$ENV
+CURRENT_DIR=$(pwd)
 
 for BRANCH in $(ls -1d $PWD/../branches/*) ;
 do
@@ -20,9 +20,18 @@ do
 done
 
 cd $CURRENT_DIR
-sleep 5
+echo "Return to $CURRENT_DIR"
+
 for BRANCH in $(ls -1d $PWD/../branches/*) ;
-  cd $BRANCH
-  chmod 777 server.socket
 do
-dome
+  cd $BRANCH
+  SOCKET="$PWD/server.socket"
+  file_to_wait=$SOCKET
+  echo "Waiting for $SOCKET"
+  while [ ! -f "$SOCKET" ]
+  do
+    sleep 1
+  done
+  chmod 777 $SOCKET
+# do
+done
