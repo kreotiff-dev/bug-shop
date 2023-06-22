@@ -10,6 +10,7 @@ do
   nx build frontend --prod
   nx build
   pm2 start $BRANCH/dist/apps/backend/main.js --name $NAME
+  chmod 777 server.socket
   echo "*** RUNNING $NAME ***"
   echo "*** Path $BRANCH"
 
