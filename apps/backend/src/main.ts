@@ -4,21 +4,21 @@
  */
 
 // Add this to the VERY top of the first file loaded in your app
-const apm = require('elastic-apm-node').start({
+// const apm = require('elastic-apm-node').start({
 
-  // Override the service name from package.json
-  // Allowed characters: a-z, A-Z, 0-9, -, _, and space
-  serviceName: 'Bug-Shop',
+//   // Override the service name from package.json
+//   // Allowed characters: a-z, A-Z, 0-9, -, _, and space
+//   serviceName: 'Bug-Shop',
 
-  // Use if APM Server requires a secret token
-  secretToken: '',
+//   // Use if APM Server requires a secret token
+//   secretToken: '',
 
-  // Set the custom APM Server URL (default: http://localhost:8200)
-  serverUrl: 'http://localhost:8200',
+//   // Set the custom APM Server URL (default: http://localhost:8200)
+//   serverUrl: 'http://localhost:8200',
 
-  // Set the service environment
-  environment: 'production'
-})
+//   // Set the service environment
+//   environment: 'production'
+// })
 
 
 import { Logger, ValidationPipe } from '@nestjs/common';
