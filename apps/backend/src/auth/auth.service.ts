@@ -36,13 +36,13 @@ export class AuthService {
       },
     });
     if (!user) {
-      logger.error('Логин не верный');
-      throw new HttpException(`Логин не верный`, HttpStatus.BAD_REQUEST);
+      logger.error('Логин не верный1');
+      throw new HttpException(`Логин не верный1`, HttpStatus.BAD_REQUEST);
     }
     const pwMatches = await argon.verify(user.password, dto.password);
     if (!pwMatches) {
-      logger.error('Пароль не верный');
-      throw new HttpException(`Пароль не верный`, HttpStatus.BAD_REQUEST);
+      logger.error('Пароль не верный1');
+      throw new HttpException(`Пароль не верный1`, HttpStatus.BAD_REQUEST);
     }
     const tokens = await this.signToken(user.id, user.email, user.role);
     return { ...tokens };
