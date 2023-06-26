@@ -16,6 +16,8 @@ do
     FOLDER="../branches/$(cut -d'/' -f3 <<<"$BRANCH")"
     echo Extract $BRANCH
     git checkout $BRANCH &&
+    git fetch &&
+    git pull
     mkdir $FOLDER -p &&
     rsync -r \
         --exclude '.git' \
