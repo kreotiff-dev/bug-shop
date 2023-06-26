@@ -3,6 +3,7 @@
 # rm ../branches -r > /dev/null
 mkdir ../branches >> /dev/null
 git fetch --all
+git pull
 for BRANCH in $(git branch | awk '{if(NR>0)print}' | cut -c 3-) ;
 do
     FOLDER="../branches/$(cut -d'/' -f3 <<<"$BRANCH")"
