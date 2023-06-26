@@ -1,0 +1,15 @@
+[Unit]
+Description=Bug-Shop site
+
+[Service]
+WorkingDirectory=/var/www/www-root/data/www/bug-shop.ru/store
+ExecStart=/bin/bash -c 'HOME=/root/ ./bin/up.sh'
+ExecReload=/bin/bash -c 'HOME=/root/ ./bin/up.sh'
+RemainAfterExit=true
+ExecStop=/bin/bash -c 'HOME=/root/ ./bin/down.sh'
+Restart=no
+RestartSec=1s
+
+[Install]
+WantedBy=network-online.target
+Alias=bug-shop.service

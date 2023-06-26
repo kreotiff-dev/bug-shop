@@ -91,3 +91,11 @@ Get from repository and update
 ```bash
 service bug-shop restart
 ```
+
+Change version
+--------------
+
+- https://bug-shop.ru/v/1 - set version to 1 (branch)
+- https://bug-shop.ru/v - check version (branch)
+
+default branch - **main**
