@@ -76,12 +76,6 @@ npm run build
 npm run build:frontend
 ```
 
-Start backend
--------------
-
-```bash
-npm run start:migrate:prod
-```
 
 On hosting
 ----------
