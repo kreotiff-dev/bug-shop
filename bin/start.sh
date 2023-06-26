@@ -10,6 +10,7 @@ do
   cd $BRANCH
   echo "*** Now in $PWD"
   npm i
+  mkdir $BRANCH/dist/apps/backend/static/ -p
   touch $BRANCH/dist/apps/backend/static/index.html # Bad build script?
   nx build frontend --prod
   nx build
