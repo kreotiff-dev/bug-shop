@@ -82,3 +82,12 @@ Start backend
 ```bash
 npm run start:migrate:prod
 ```
+
+On hosting
+----------
+
+Get from repository and update
+
+```bash
+service bug-shop restart
+```
