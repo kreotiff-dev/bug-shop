@@ -11,7 +11,7 @@ import { UserModule } from '../user/user.module';
     JwtModule.register({
       secret: process.env.JWT_ACCESS_SECRET || 'secret_key',
       signOptions: {
-        expiresIn: process.env.JWT_ACCESS_SECRET_EXPIRES_IN || '10h',
+        expiresIn: process.env.JWT_ACCESS_SECRET_EXPIRES_IN || '8h',
       },
     }),
     forwardRef(() => UserModule),
