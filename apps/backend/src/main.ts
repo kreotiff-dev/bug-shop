@@ -3,40 +3,46 @@
  * This is only a minimal backend to get started.
  */
 
-import { Logger, ValidationPipe } from '@nestjs/common';
-import { NestFactory } from '@nestjs/core';
-import * as cookieParser from 'cookie-parser';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { Logger, ValidationPipe } from '@nestjs/common'
+import { NestFactory } from '@nestjs/core'
+import * as cookieParser from 'cookie-parser'
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
 
-import { AppModule } from './app.module';
+import { AppModule } from './app.module'
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, {});
-  app.useGlobalPipes(new ValidationPipe());
+  const app = await NestFactory.create(AppModule, {})
+  app.useGlobalPipes(new ValidationPipe())
   app.enableCors({
     credentials: true,
     origin: [process.env['CLIENT_URL']],
-  });
+  })
 
   const config = new DocumentBuilder()
     .setTitle('Store API')
     .setDescription('API documentation')
     .setVersion('1.0')
-    .addTag('users')
-    .addBearerAuth(
-    { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' },
-    'JWT',
-    )
-    .build();
+    .addTag('auth')
+    .addTag('user')
+    .addBearerAuth()
+    .build()
 
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+    // const options = {
+    //   swaggerOptions: {
+    //     persistAuthorization: true, // this
+    //   }
+    // };
 
-  app.use(cookieParser());
-  const port = process.env.PORT_SERVER || 3000;
+
+  const document = SwaggerModule.createDocument(app, config)
+  SwaggerModule.setup('api', app, document)
+
+  app.use(cookieParser())
+  const port = process.env.PORT_SERVER || 3001
   await app.listen('server.socket');
+  // await app.listen(3000)
   // Logger.log(`🚀 Application is running on: http://localhost:${port}`);
-  Logger.log(`🚀 Application is running on: server.socket`);
+  Logger.log(`🚀 Application is running on: server.socket`)
 }
 
-bootstrap();
+bootstrap()

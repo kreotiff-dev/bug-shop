@@ -10,7 +10,7 @@ import {
   HttpStatus,
   Param,
 } from '@nestjs/common';
-import { ApiHeaders, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiHeader, ApiHeaders, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { passwordDto, resetPassword, updateUserDto } from '@store/interface';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { UserService } from './user.service';
@@ -18,24 +18,26 @@ import { UserService } from './user.service';
 @ApiTags('Личный кабинет')
 @Controller('user')
 export class UserController {
-  constructor(private service: UserService) {}
+  constructor(private service: UserService) { }
 
-  @ApiOperation({
-    summary: 'Получить информацию об аккаунте',
-    description: 'Позволяет пользователю получить информацию о данных о своей учетной записи',
-  })
-  @ApiResponse({description:'Возвращает данные о пользователе', status: HttpStatus.OK})
-  @ApiResponse({description:'Пользователь не авторизован', status: HttpStatus.UNAUTHORIZED})
-  @HttpCode(HttpStatus.OK)
-  @ApiHeaders([
-    {
-      name:'Authorization',
-      description:'Токен авторизации',
-    }
-  ])
-  @UseGuards(JwtAuthGuard)
+  // @Get('/getUsers')
+
+  // @ApiBearerAuth('Authorization')
+  // async getUsers(){
+  //   return ['test', 'test2']
+  // }
+
+    @ApiOperation({
+      summary: 'Получить информацию об аккаунте',
+      description: 'Позволяет пользователю получить информацию о данных о своей учетной записи',
+    })
+    @ApiResponse({ description: 'Возвращает данные о пользователе', status: HttpStatus.OK })
+    @ApiResponse({ description: 'Пользователь не авторизован', status: HttpStatus.UNAUTHORIZED })
+    @HttpCode(HttpStatus.OK)
+    @UseGuards(JwtAuthGuard)
+    @ApiBearerAuth()
   @Get('')
-  getMe(@Headers('Authorization') token: string) {
+  getMe(token: string) {
     return this.service.getMe({ token });
   }
 
@@ -51,7 +53,7 @@ export class UserController {
   }
 
 
- 
+
   @ApiOperation({
     summary: 'Изменить данные аккаунта',
     description: 'Позволяет пользователю изменить данные учетной записи',
