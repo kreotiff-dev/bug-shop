@@ -25,6 +25,8 @@ async function bootstrap() {
     .addTag('auth')
     .addTag('user')
     .addBearerAuth()
+    .setBasePath('/api')
+    .addServer('/api')
     .build()
 
     // const options = {
@@ -38,6 +40,7 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document)
 
   app.use(cookieParser())
+  app.setGlobalPrefix('api')
   // const port = process.env.PORT_SERVER || 3001
   // await app.listen('server.socket');
   await app.listen(3000)
