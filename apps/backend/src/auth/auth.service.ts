@@ -174,6 +174,7 @@ export class AuthService {
   }
   validateAccessToken(token: string): Promise<User> {
     try {
+      console.log('JWT', token, process.env.JWT_ACCESS_SECRET)
       const userData = this.jwt.verify(token, {
         secret: process.env.JWT_ACCESS_SECRET,
       });

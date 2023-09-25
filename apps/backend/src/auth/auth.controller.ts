@@ -1,8 +1,9 @@
-import { Body, Controller, Post, Req, Res, HttpStatus, HttpCode } from '@nestjs/common';
+import { Body, Controller, Post, Req, Res, HttpStatus, HttpCode, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthDto } from '@store/interface';
 import { Response, Request } from 'express';
 import { AuthService } from './auth.service';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @ApiTags('Авторизация')
 @Controller('auth')
@@ -59,7 +60,7 @@ export class AuthController {
 
   @ApiOperation({ summary: 'Запрос на обновление токенов',description:'Позволяет пользователю получить новую пару токенов' })
   @ApiResponse({description:'Возвращает пару access и refresh токенов', status: HttpStatus.OK})
-  @ApiResponse({description:'Токен устарел', status: HttpStatus.UNAUTHORIZED})
+  @ApiResponse({ description: 'Токен устарел', status: HttpStatus.UNAUTHORIZED })
   @HttpCode(HttpStatus.OK)
   @Post('refresh')
   async refresh(@Req() request: Request, @Res() response: Response) {

@@ -22,8 +22,8 @@ async function bootstrap() {
     .setTitle('Store API')
     .setDescription('API documentation')
     .setVersion('1.0')
-    .addTag('auth')
-    .addTag('user')
+    // .addTag('auth')
+    // .addTag('user')
     .addBearerAuth()
     .setBasePath('/api')
     .addServer('/api')
@@ -42,8 +42,8 @@ async function bootstrap() {
   app.use(cookieParser())
   app.setGlobalPrefix('api')
   // const port = process.env.PORT_SERVER || 3001
-  // await app.listen('server.socket');
-  await app.listen(3000)
+  await app.listen('server.socket');
+  // await app.listen(3000)
   // Logger.log(`🚀 Application is running on: http://localhost:${port}`);
   Logger.log(`🚀 Application is running on: server.socket`)
 }
